@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
-require 'methadone'
 require 'syrup.rb'
 require 'trollop'
 require 'flapjack-diner'

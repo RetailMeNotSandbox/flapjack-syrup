@@ -1,9 +1,9 @@
-
+# FEATURE-COMPLETE - needs testing
 
 module Syrup::Medium
 
   def create(args)
-    # Apply the changes - no formatting or modification required.
+    # Create the medium - no formatting or modification required.
     Flapjack::Diner.create_contact_media(args[:id], [{
       :type             => args[:type],
       :address          => args[:address],
