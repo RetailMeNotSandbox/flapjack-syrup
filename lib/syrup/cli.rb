@@ -100,6 +100,7 @@ module SyrupCLI
         opt :host, "Host to connect to", :default => "localhost"
         opt :port, "Port to connect to", :default => "3081"
         opt :log, "Flapjack API log", :default => "flapjack_diner.log"
+        opt :pretty, "Pretty-print JSON output"
         stop_on OBJECTS
       end
 
@@ -313,9 +314,10 @@ module SyrupCLI
           opt :name, "Entity Name", :type => :string
           opt :tags, "Tags (comma-separated)", :type => :string
 #          opt :contacts, "Contact IDs (comma-separated)", :type => :string
-          # TODO: Look at the contacts option, can we do this?
+          # TODO: Look at the contacts option, can we do this? Diner page says no.
         end
       when 'get'
+        # TODO: These are currently mutually exclusive. Should they be?
         @action_args = Trollop::options do
           opt :ids, "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
           opt :regex, "Return only entities matching this regular expression", :type => :string

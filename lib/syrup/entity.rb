@@ -3,8 +3,10 @@
 module Syrup::Entity
 
   def create(args)
+    # Split comma-separated tags into an array
     tags = args[:tags].split(',') if args[:tags]
     Flapjack::Diner.create_entities([{
+      # TODO: Does Flapjack accept no ID and generate one, like with Contacts?
       :id    => args[:id],
       :name  => args[:name],
       :tags  => tags
@@ -32,7 +34,8 @@ module Syrup::Entity
     changes[:email]      = args[:email] if args[:email]
     changes[:timezone]   = args[:timezone] if args[:timezone_name]
     changes[:tags]       = tags if tags
-    Flapjack::Diner.update_entities([*ids], changes) #TODO: Is there a mistake in the API docs?
+    Flapjack::Diner.update_entities(*ids, changes)
+    #TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
   end
 
   def delete(args)

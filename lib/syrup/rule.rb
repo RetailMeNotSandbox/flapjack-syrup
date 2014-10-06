@@ -3,21 +3,21 @@
 require 'json'
 module Syrup::Rule
 
-  def create
-    File.open( @action_opts[:json], "r" ) do |f|
+  def create(args)
+    File.open( args[:json], "r" ) do |f|
       json = JSON.load( f )
     end
-    Flapjack::Diner.create_notification_rules(@action_opts[:contact_id], json)
+    Flapjack::Diner.create_notification_rules(args[:contact_id], json)
   end
 
   def get
-    ids = @action_opts[:ids].split(',') if @action_opts[:ids]
-    puts Flapjack::Diner.notification_rules(*ids) #TODO: Check that this actually works...
+    ids = args[:ids].split(',') if args[:ids]
+    puts JSON.pretty_generate(Flapjack::Diner.notification_rules(*ids))
   end
 
   def update
-    ids = @action_opts[:ids].split(',')
-    File.open( @action_opts[:json], "r" ) do |f|
+    ids = args[:ids].split(',')
+    File.open( args[:json], "r" ) do |f|
       json = JSON.load( f )
     end
     Flapjack::Diner.update_notification_rules(*ids,json)
@@ -25,7 +25,7 @@ module Syrup::Rule
   end
 
   def delete
-    ids = @action_opts[:ids].split(',') if @action_opts[:ids]
+    ids = args[:ids].split(',') if args[:ids]
     Flapjack::Diner.delete_notification_rules(*ids)
   end
 end

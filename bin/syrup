@@ -43,10 +43,10 @@ class App
   include Methadone::CLILogging
   include SyrupCLI
 
-  def self.apply_action
-    meth = self.method(@cli.action)
-    meth.call()
-  end
+#  def self.apply_action
+#    meth = self.method(@cli.action)
+#    meth.call()
+#  end
 
   main do
     # Apply flapjack API path, logger information, etc.

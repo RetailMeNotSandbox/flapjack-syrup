@@ -7,7 +7,7 @@ module Syrup::Contact
     tags = args[:tags].split(',') if args[:tags]
     # Create the contact
     Flapjack::Diner.create_contacts([{
-      :id         => args[:id],
+      :id         => args[:id], # TODO: Is passing nil good enough to auto-generate or should we omit it from the hash?
       :first_name => args[:first_name],
       :last_name  => args[:last_name],
       :email      => args[:email],
@@ -18,8 +18,8 @@ module Syrup::Contact
 
   def get(args)
     # Split comma-separated IDs into an array
-    ids = @args[:ids].split(',') if @args[:ids]
-    puts Flapjack::Diner.contacts(*ids)
+    ids = args[:ids].split(',') if args[:ids]
+    puts JSON.pretty_generate(Flapjack::Diner.contacts(*ids))
   end
 
   def update(args)
