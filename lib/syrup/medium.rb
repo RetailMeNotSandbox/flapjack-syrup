@@ -1,5 +1,3 @@
-# FEATURE-COMPLETE - needs testing
-
 module Syrup::Medium
 
   def create(args)

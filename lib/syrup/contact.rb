@@ -1,5 +1,3 @@
-# FEATURE-COMPLETE - needs testing
-
 module Syrup::Contact
 
   def create(args)
@@ -7,7 +5,7 @@ module Syrup::Contact
     tags = args[:tags].split(',') if args[:tags]
     # Create the contact
     Flapjack::Diner.create_contacts([{
-      :id         => args[:id], # TODO: Is passing nil good enough to auto-generate or should we omit it from the hash?
+      :id         => args[:id], # Passing nil is good enough to get it to create an ID for you.
       :first_name => args[:first_name],
       :last_name  => args[:last_name],
       :email      => args[:email],
@@ -25,7 +23,7 @@ module Syrup::Contact
   def update(args)
     # Split CSV arguments into arrays
     ids    = args[:ids].split(',') if args[:ids]
-    tags   = args[:add_tags].split(',') if args[:tags]
+    tags   = args[:add_tags].split(',') if args[:add_tags]
     rtags  = args[:remove_tags].split(',') if args[:remove_tags]
     rules  = args[:add_rules].split(',') if args[:add_rules]
     rrules = args[:remove_rules].split(',') if args[:remove_rules]
@@ -37,24 +35,33 @@ module Syrup::Contact
     changes[:last_name]  = args[:last_name] if args[:last_name]
     changes[:email]      = args[:email] if args[:email]
     changes[:timezone]   = args[:timezone] if args[:timezone_name]
-    changes[:tags]       = tags if tags
+#    changes[:tags]       = tags if tags
     # Apply field changes.
-    Flapjack::Diner.update_contacts(*ids, changes)
+    if not changes.empty?
+      Flapjack::Diner.update_contacts(*ids, changes)
+    end
 
     # Loop through all of the add/remove arrays, make a call to update each one
-    tags.each do |tag|
-      Flapjack::Diner.update_contacts(*ids, :add_tag => tag)
+    if tags
+      tags.each do |tag|
+        Flapjack::Diner.update_contacts(*ids, :add_tag => tag)
+      end
     end
-    rtags.each do |tag|
-      Flapjack::Diner.update_contacts(*ids, :remove_tag => tag)
+    if rtags
+      rtags.each do |tag|
+        Flapjack::Diner.update_contacts(*ids, :remove_tag => tag)
+      end
     end
-    rules.each do |rule|
-      Flapjack::Diner.update_contacts(*ids, :add_notificaiton_rule => tag)
+    if rules
+      rules.each do |rule|
+        Flapjack::Diner.update_contacts(*ids, :add_notification_rule => tag)
+      end
     end
-    rrules.each do |rule|
-      Flapjack::Diner.update_contacts(*ids, :remove_notification_rule => tag)
+    if rrules
+      rrules.each do |rule|
+        Flapjack::Diner.update_contacts(*ids, :remove_notification_rule => tag)
+      end
     end
-
   end
 
   def delete(args)
