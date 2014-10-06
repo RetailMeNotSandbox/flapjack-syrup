@@ -2,29 +2,35 @@
 
 module Syrup::Check
 
-  def create(args)
-    tags = args[:tags].split(',') if args[:tags]
-    Flapjack::Diner.create_checks([{
-      :entity_id => args[:entity_id],
-      :name      => args[:name],
-      :tags      => tags
-      }])
-  end
+  # TODO: Determine whether to keep create and update in the codebase.
+  # There is NO delete option, so it probably makes more sense to force people to use programmatic methods.
+  # Matt suggested that if we dont, we should restructure the CLI:
+  # "syrup maintenance [un]scheduled check|entity create|update|delete"
+
+
+  # def create(args)
+  #   tags = args[:tags].split(',') if args[:tags]
+  #   Flapjack::Diner.create_checks([{
+  #     :entity_id => args[:entity_id],
+  #     :name      => args[:name],
+  #     :tags      => tags
+  #     }])
+  # end
 
   def get(args)
     ids = args[:ids].split(',') if args[:ids]
     puts Flapjack::Diner.checks(*ids)
   end
 
-  def update(args)
-    ids  = args[:ids].split(',')
-    changes = {}
-    Flapjack::Diner.update_checks([*ids], changes) #TODO: Is there a mistake in the API docs?
-    # TODO: For-loop applying add_tags and remove_tags
-  end
+  # def update(args)
+  #   ids  = args[:ids].split(',')
+  #   changes = {}
+  #   Flapjack::Diner.update_checks([*ids], changes) #TODO: Is there a mistake in the API docs?
+  #   # TODO: For-loop applying add_tags and remove_tags
+  # end
 
   def delete(args)
-    # FLAPJACK API DOCS SHOW NO DELETE METHOD FOR ENTITIES!
+    # FLAPJACK API DOCS SHOW NO DELETE METHOD FOR CHECKS!
     puts "Not implemented"
   end
 

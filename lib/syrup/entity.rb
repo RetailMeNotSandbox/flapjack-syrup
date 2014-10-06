@@ -2,22 +2,29 @@
 
 module Syrup::Entity
 
-  def create(args)
-    # Split comma-separated tags into an array
-    tags = args[:tags].split(',') if args[:tags]
-    Flapjack::Diner.create_entities([{
-      # TODO: Does Flapjack accept no ID and generate one, like with Contacts?
-      :id    => args[:id],
-      :name  => args[:name],
-      :tags  => tags
-      }])
-  end
+  # TODO: Determine whether to keep create and update in the codebase.
+  # There is NO delete option, so it probably makes more sense to force people to use programmatic methods.
+  # Matt suggested that if we dont, we should restructure the CLI:
+  # "syrup maintenance [un]scheduled check|entity create|update|delete"
+
+  # def create(args)
+  #   # Split comma-separated tags into an array
+  #   tags = args[:tags].split(',') if args[:tags]
+  #   #TODO: Tags failed to be added when I created an entity.
+  #   Flapjack::Diner.create_entities([{
+  #     # ID is REQUIRED, not auto-generated.
+  #     :id    => args[:id],
+  #     :name  => args[:name],
+  #     :tags  => tags
+  #     }])
+  # end
 
   def get(args)
     if args[:ids] and args[:regex]
       Trollop::die "Must provide either a list of IDs or a regular expression, not both"
     end
     ids = args[:ids].split(',') if args[:ids]
+    puts Flapjack::Diner.entities
     if ids
       puts Flapjack::Diner.entities(*ids)
     elsif args[:regex]
@@ -25,17 +32,41 @@ module Syrup::Entity
     end
   end
 
-  def update(args)
-    ids  = args[:ids].split(',')
-    tags = args[:tags].split(',') if tags
-    changes = {}
-    changes[:first_name] = args[:first_name] if args[:first_name]
-    changes[:last_name]  = args[:last_name] if args[:last_name]
-    changes[:email]      = args[:email] if args[:email]
-    changes[:timezone]   = args[:timezone] if args[:timezone_name]
-    changes[:tags]       = tags if tags
-    Flapjack::Diner.update_entities(*ids, changes)
-    #TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
+#   def update(args)
+#     ids  = args[:ids].split(',')
+#     tags = args[:add_tags].split(',') if :add_tags
+#     rtags = args[:remove_tags].split(',') if :remove_tags
+#     contacts = args[:add_contacts].split(',') if :add_contacts
+#     rcontacts = args[:remove_contacts].split(',') if :remove_contacts
+
+# #    Flapjack::Diner.update_entities(*ids, changes)
+#     #TODO: There are no valid update field keys yet, per the flapjack-diner docs.
+#     #TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
+
+#     # Loop through all of the add/remove arrays, make a call to update each one
+#     if tags
+#       tags.each do |tag|
+#         Flapjack::Diner.update_entities(*ids, :add_tag => tag)
+#       end
+#     end
+#     if rtags
+#       rtags.each do |tag|
+#         Flapjack::Diner.update_entities(*ids, :remove_tag => tag)
+#       end
+#     end
+#     if contacts
+#       rcontacts.each do |contact|
+#         Flapjack::Diner.update_entities(*ids, :add_contact => tag)
+#       end
+#     end
+#     if rcontacts
+#       rcontacts.each do |contacts|
+#         Flapjack::Diner.update_entities(*ids, :remove_contact => tag)
+#       end
+#     end
+
+
+
   end
 
   def delete(args)

@@ -310,7 +310,7 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id, "Unique Identifier (generated if omitted)", :type => :string
+          opt :id, "Unique Identifier", :type => :string
           opt :name, "Entity Name", :type => :string
           opt :tags, "Tags (comma-separated)", :type => :string
 #          opt :contacts, "Contact IDs (comma-separated)", :type => :string

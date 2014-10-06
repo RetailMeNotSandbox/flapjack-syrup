@@ -42,6 +42,8 @@ module Syrup::Contact
     end
 
     # Loop through all of the add/remove arrays, make a call to update each one
+    #TODO: This isn't working, even though it appears to be how the Diner page says to do it.
+    # Maybe check the code?
     if tags
       tags.each do |tag|
         Flapjack::Diner.update_contacts(*ids, :add_tag => tag)
