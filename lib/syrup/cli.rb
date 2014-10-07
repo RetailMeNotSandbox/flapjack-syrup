@@ -51,31 +51,31 @@ module SyrupCLI
         EOS
     ENTITY_BANNER = <<-EOS.gsub(/^ {10}/, '')
           ** Entity Commands **
-          syrup entity create
+          syrup entity create (not implemented)
           syrup entity get
           syrup entity update
-          syrup entity create-scheduled-maintenance
-          syrup entity delete-scheduled-maintenance
-          syrup entity start-unscheduled-maintenance
-          syrup entity update-unscheduled-maintenance
-          syrup entity get-maintenance-periods
+          syrup entity create-scheduled-maintenance (not implemented)
+          syrup entity delete-scheduled-maintenance (not implemented)
+          syrup entity start-unscheduled-maintenance (not implemented)
+          syrup entity update-unscheduled-maintenance (not implemented)
+          syrup entity get-maintenance-periods (not implemented)
           syrup entity status
-          syrup entity outages
-          syrup entity downtimes
+          syrup entity outages (not implemented)
+          syrup entity downtimes (not implemented)
           syrup entity test\n\r
         EOS
     CHECK_BANNER = <<-EOS.gsub(/^ {10}/, '')
           ** Check Commands **
-          syrup check create
+          syrup check create (not implemented)
           syrup check update
-          syrup check create-scheduled-maintenance
-          syrup check delete-scheduled-maintenance
-          syrup check start-unscheduled-maintenance
-          syrup check update-unscheduled-maintenance
-          syrup check get-maintenance-periods
+          syrup check create-scheduled-maintenance (not implemented)
+          syrup check delete-scheduled-maintenance (not implemented)
+          syrup check start-unscheduled-maintenance (not implemented)
+          syrup check update-unscheduled-maintenance (not implemented)
+          syrup check get-maintenance-periods (not implemented)
           syrup check status
-          syrup check outages
-          syrup check downtimes
+          syrup check outages (not implemented)
+          syrup check downtimes (not implemented)
           syrup check test\n\r
         EOS
 

@@ -19,6 +19,11 @@ module Syrup::Entity
   #     }])
   # end
 
+  def create(args)
+    puts "Not implemented"
+  end
+
+
   def get(args)
     if args[:ids] and args[:regex]
       Trollop::die "Must provide either a list of IDs or a regular expression, not both"
@@ -32,41 +37,38 @@ module Syrup::Entity
     end
   end
 
-#   def update(args)
-#     ids  = args[:ids].split(',')
-#     tags = args[:add_tags].split(',') if :add_tags
-#     rtags = args[:remove_tags].split(',') if :remove_tags
-#     contacts = args[:add_contacts].split(',') if :add_contacts
-#     rcontacts = args[:remove_contacts].split(',') if :remove_contacts
+  def update(args)
+    ids  = args[:ids].split(',')
+    tags = args[:add_tags].split(',') if args[:add_tags]
+    rtags = args[:remove_tags].split(',') if args[:remove_tags]
+    contacts = args[:add_contacts].split(',') if args[:add_contacts]
+    rcontacts = args[:remove_contacts].split(',') if args[:remove_contacts]
 
-# #    Flapjack::Diner.update_entities(*ids, changes)
-#     #TODO: There are no valid update field keys yet, per the flapjack-diner docs.
-#     #TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
+#    Flapjack::Diner.update_entities(*ids, changes)
+    #TODO: There are no valid update field keys yet, per the flapjack-diner docs.
+    #TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
 
-#     # Loop through all of the add/remove arrays, make a call to update each one
-#     if tags
-#       tags.each do |tag|
-#         Flapjack::Diner.update_entities(*ids, :add_tag => tag)
-#       end
-#     end
-#     if rtags
-#       rtags.each do |tag|
-#         Flapjack::Diner.update_entities(*ids, :remove_tag => tag)
-#       end
-#     end
-#     if contacts
-#       rcontacts.each do |contact|
-#         Flapjack::Diner.update_entities(*ids, :add_contact => tag)
-#       end
-#     end
-#     if rcontacts
-#       rcontacts.each do |contacts|
-#         Flapjack::Diner.update_entities(*ids, :remove_contact => tag)
-#       end
-#     end
-
-
-
+    # Loop through all of the add/remove arrays, make a call to update each one
+    if tags
+      tags.each do |tag|
+        Flapjack::Diner.update_entities(*ids, :add_tag => tag)
+      end
+    end
+    if rtags
+      rtags.each do |tag|
+        Flapjack::Diner.update_entities(*ids, :remove_tag => tag)
+      end
+    end
+    if contacts
+      rcontacts.each do |contact|
+        Flapjack::Diner.update_entities(*ids, :add_contact => tag)
+      end
+    end
+    if rcontacts
+      rcontacts.each do |contacts|
+        Flapjack::Diner.update_entities(*ids, :remove_contact => tag)
+      end
+    end
   end
 
   def delete(args)
@@ -74,63 +76,91 @@ module Syrup::Entity
     puts "Not implemented"
   end
 
+  # def create_scheduled_maintenance(args)
+  #   ids = args[:ids].split(',')
+  #   Flapjack::Diner.create_scheduled_maintenances_entities(*ids,
+  #     :start_time => args[:start_time],
+  #     :duration   => args[:duration],
+  #     :summary    => args[:summary]
+  #   )
+  # end
+
   def create_scheduled_maintenance(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.create_scheduled_maintenances_entities(*ids,
-      :start_time => args[:start_time],
-      :duration   => args[:duration],
-      :summary    => args[:summary]
-    )
+    puts "Not implemented"
   end
+
+  # def delete_scheduled_maintenance(args)
+  #   ids = args[:ids].split(',')
+  #   Flapjack::Diner.delete_scheduled_maintenances_entities(*ids,
+  #     :start_time => args[:start_time],
+  #   )
+  # end
 
   def delete_scheduled_maintenance(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.delete_scheduled_maintenances_entities(*ids,
-      :start_time => args[:start_time],
-    )
+    puts "Not implemented"
   end
+
+  # def start_unscheduled_maintenance(args)
+  #   Flapjack::Diner.create_unscheduled_maintenances_entities(*ids,
+  #     :duration   => args[:duration],
+  #     :summary    => args[:summary]
+  #   )
+  # end
 
   def start_unscheduled_maintenance(args)
-    Flapjack::Diner.create_unscheduled_maintenances_entities(*ids,
-      :duration   => args[:duration],
-      :summary    => args[:summary]
-    )
+    puts "Not implemented"
   end
+
+  # def update_unscheduled_maintenance(args)
+  #   Flapjack::Diner.update_unscheduled_maintenances_entities(*ids,
+  #     :end_time   => args[:end_time], # ISO 8601
+  #   )
+  # end
 
   def update_unscheduled_maintenance(args)
-    Flapjack::Diner.update_unscheduled_maintenances_entities(*ids,
-      :end_time   => args[:end_time], # ISO 8601
-    )
+    puts "Not implemented"
   end
+
+  # def get_maintenance_periods(args)
+  #   if !args[:scheduled] and !args[:unscheduled]
+  #     args[:scheduled] = true
+  #     args[:unscheduled] = true
+  #   end
+  #   if args[:scheduled]
+  #     result1 = get_scheduled_maintenance(args)
+  #   end
+  #   if args[:unscheduled]
+  #     result2 = get_unscheduled_maintenance(args)
+  #   end
+  #   result = result1 + result2
+  # end
 
   def get_maintenance_periods(args)
-    if !args[:scheduled] and !args[:unscheduled]
-      args[:scheduled] = true
-      args[:unscheduled] = true
-    end
-    if args[:scheduled]
-      result1 = get_scheduled_maintenance(args)
-    end
-    if args[:unscheduled]
-      result2 = get_unscheduled_maintenance(args)
-    end
-    result = result1 + result2
+    puts "Not implemented"
   end
+
+  # def get_scheduled_maintenance(args)
+  #   ids = args[:ids].split(',')
+  #   Flapjack::Diner.scheduled_maintenance_report_entities(*ids,
+  #     :start_time => args[:start_time],
+  #     :end_time   => args[:end_time]
+  #   )
+  # end
 
   def get_scheduled_maintenance(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.scheduled_maintenance_report_entities(*ids,
-      :start_time => args[:start_time],
-      :end_time   => args[:end_time]
-    )
+    puts "Not implemented"
   end
 
+  # def get_unscheduled_maintenance(args)
+  #   ids = args[:ids].split(',')
+  #   Flapjack::Diner.unscheduled_maintenance_report_entities(*ids,
+  #     :start_time => args[:start_time],
+  #     :end_time   => args[:end_time]
+  #   )
+  # end
+
   def get_unscheduled_maintenance(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.unscheduled_maintenance_report_entities(*ids,
-      :start_time => args[:start_time],
-      :end_time   => args[:end_time]
-    )
+    puts "Not implemented"
   end
 
   def status(args)
@@ -138,20 +168,28 @@ module Syrup::Entity
     Flapjack::Diner.status_report_entities(*ids)
   end
 
+  # def outages(args)
+  #   ids = args[:ids].split(',')
+  #   Flapjack::Diner.outage_report_entities(*ids,
+  #     :start_time => args[:start_time],
+  #     :end_time   => args[:end_time]
+  #   )
+  # end
+
   def outages(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.outage_report_entities(*ids,
-      :start_time => args[:start_time],
-      :end_time   => args[:end_time]
-    )
+    puts "Not implemented"
   end
 
+  # def downtimes(args)
+  # ids = args[:ids].split(',')
+  #   Flapjack::Diner.downtime_report_entities(*ids,
+  #     :start_time => args[:start_time],
+  #     :end_time   => args[:end_time]
+  #   )
+  # end
+
   def downtimes(args)
-  ids = args[:ids].split(',')
-    Flapjack::Diner.downtime_report_entities(*ids,
-      :start_time => args[:start_time],
-      :end_time   => args[:end_time]
-    )
+    puts "Not implemented"
   end
 
   def test(args)
