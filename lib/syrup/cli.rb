@@ -322,9 +322,11 @@ module SyrupCLI
           opt :ids, "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
           opt :regex, "Return only entities matching this regular expression", :type => :string
         end
+        Trollop::die :ids, "cannot be called with argument --regex" if @action_args[:ids] and @action_args[:regex]
       when 'update'
         @action_args = Trollop::options do
           # TODO: Diner project page says there are no valid update field keys yet.
+          opt :ids, "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
           opt :add_tags, "Apply tags (comma-separated)", :type => :string
           opt :remove_tags, "Remove tags (comma-separated)", :type => :string
           opt :add_contacts, "Add contacts for this entity (comma-separated)", :type => :string
@@ -353,39 +355,39 @@ module SyrupCLI
         # TODO: Add a note explaining that CREATION of unscheduled maintenance uses duration; UPDATING it uses a specific time.
         @action_args = Trollop::options do
           opt :ids, "Entities to modify maintenance on (comma-separated)", :type => :string
-          opt :end_time, "Maintenance end time (ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :end_time, "Maintenance end time (ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'get-maintenance-periods'
         # TODO: Verify that we can actually pass start and end times - shown in the api docs, not shown in the diner project page
         @action_args = Trollop::options do
-          opt :ids, "Entities to get maintenance periods for (comma-separated)"
+          opt :ids, "Entities to get maintenance periods for (comma-separated)", :type => :string
           opt :scheduled, "Get only scheduled periods"
           opt :unscheduled, "Get only unscheduled periods"
-          opt :start_time, "Get periods after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
-          opt :end_time, "Get periods before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :start_time, "Get periods after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
+          opt :end_time, "Get periods before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'status'
         @action_args = Trollop::options do
-          opt :ids, "Entities to get status for (comma-separated)"
+          opt :ids, "Entities to get status for (comma-separated)", :type => :string
         end
       when 'outages'
         # TODO: Verify that we can actually pass start and end times - shown in the api docs, not shown in the diner project page
         @action_args = Trollop::options do
-          opt :ids, "Entities to get outages for (comma-separated)"
-          opt :start_time, "Get outages after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
-          opt :end_time, "Get outages before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :ids, "Entities to get outages for (comma-separated)", :type => :string
+          opt :start_time, "Get outages after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
+          opt :end_time, "Get outages before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'downtimes'
         # TODO: Verify that we can actually pass start and end times - shown in the api docs, not shown in the diner project page
         @action_args = Trollop::options do
-          opt :ids, "Entities to get downtimes for (comma-separated)"
-          opt :start_time, "Get downtimes after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
-          opt :end_time, "Get downtimes before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :ids, "Entities to get downtimes for (comma-separated)", :type => :string
+          opt :start_time, "Get downtimes after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
+          opt :end_time, "Get downtimes before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'test'
         @action_args = Trollop::options do
-          opt :ids, "Entity to test notifications for (comma-separated)"
-          opt :summary, "Notification text to send"
+          opt :ids, "Entity to test notifications for (comma-separated)", :type => :string
+          opt :summary, "Notification text to send", :type => :string
         end
       else
         explode(opts)
@@ -440,7 +442,7 @@ module SyrupCLI
         # TODO: Can you change the summary on an unscheduled maintenance object?
         @action_args = Trollop::options do
           opt :ids, "Check to modify maintenance on (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
-          opt :end_time, "Maintenance end time (ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :end_time, "Maintenance end time (ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'get-maintenance-periods'
         # TODO: Verify that we can actually pass start and end times - shown in the api docs, not shown in the diner project page
@@ -448,31 +450,31 @@ module SyrupCLI
           opt :ids, "Checks to get maintenance periods for (comma-separated, format \"<entity_name>:<check_name>\")"
           opt :scheduled, "Get only scheduled periods"
           opt :unscheduled, "Get only unscheduled periods"
-          opt :start_time, "Get periods after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
-          opt :end_time, "Get periods before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :start_time, "Get periods after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
+          opt :end_time, "Get periods before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'status'
         @action_args = Trollop::options do
-          opt :ids, "Checks to get status for (comma-separated, format \"<entity_name>:<check_name>\")"
+          opt :ids, "Checks to get status for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
         end
       when 'outages'
         # TODO: Verify that we can actually pass start and end times - shown in the api docs, not shown in the diner project page
         @action_args = Trollop::options do
-          opt :ids, "Checks to get outages for (comma-separated, format \"<entity_name>:<check_name>\")"
-          opt :start_time, "Get outages after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
-          opt :end_time, "Get outages before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :ids, "Checks to get outages for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
+          opt :start_time, "Get outages after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
+          opt :end_time, "Get outages before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'downtimes'
         # TODO: Verify that we can actually pass start and end times - shown in the api docs, not shown in the diner project page
         @action_args = Trollop::options do
-          opt :ids, "Checks to get downtimes for (comma-separated, format \"<entity_name>:<check_name>\")"
-          opt :start_time, "Get downtimes after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
-          opt :end_time, "Get downtimes before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)"
+          opt :ids, "Checks to get downtimes for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
+          opt :start_time, "Get downtimes after this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
+          opt :end_time, "Get downtimes before this time (optional, ISO 8601 format: YYYY-MM-DDThh:mm:ssZ)", :type => :string
         end
       when 'test'
         @action_args = Trollop::options do
-          opt :ids, "Checks to test notifications for (comma-separated, format \"<entity_name>:<check_name>\")"
-          opt :summary, "Notification text to send"
+          opt :ids, "Checks to test notifications for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
+          opt :summary, "Notification text to send", :type => :string
         end
       else
         explode(opts)

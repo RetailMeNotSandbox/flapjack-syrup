@@ -7,7 +7,6 @@ module Syrup::Check
   # Matt suggested that if we dont, we should restructure the CLI:
   # "syrup maintenance [un]scheduled check|entity create|update|delete"
 
-
   # def create(args)
   #   tags = args[:tags].split(',') if args[:tags]
   #   Flapjack::Diner.create_checks([{
@@ -22,15 +21,33 @@ module Syrup::Check
   end
 
   def get(args)
+    puts Flapjack::Diner.checks
     ids = args[:ids].split(',') if args[:ids]
     puts Flapjack::Diner.checks(*ids)
   end
 
   def update(args)
-    ids  = args[:ids].split(',')
+    ids   = args[:ids].split(',')
+    tags  = args[:add_tags].split(',') if args[:add_tags]
+    rtags = args[:remove_tags].split(',') if args[:remove_tags]
     changes = {}
-    Flapjack::Diner.update_checks([*ids], changes) #TODO: Is there a mistake in the API docs?
-    # TODO: For-loop applying add_tags and remove_tags
+    changes [:enabled] = true  if args[:enable]
+    changes [:enabled] = false if args[:disable]
+
+    Flapjack::Diner.update_checks(*ids, changes)
+    # TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
+
+    # Loop through all of the add/remove arrays, make a call to update each one
+    if tags
+      tags.each do |tag|
+        Flapjack::Diner.update_entities(*ids, :add_tag => tag)
+      end
+    end
+    if rtags
+      rtags.each do |tag|
+        Flapjack::Diner.update_entities(*ids, :remove_tag => tag)
+      end
+    end
   end
 
   def delete(args)
@@ -126,8 +143,8 @@ module Syrup::Check
   end
 
   def status(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.status_report_checks(*ids)
+    ids = args[:ids].split(',') if args[:ids]
+    print_json Flapjack::Diner.status_report_checks(*ids)
   end
 
   # def outages(args)
@@ -155,10 +172,8 @@ module Syrup::Check
   end
 
   def test(args)
-  ids = args[:ids].split(',')
-    Flapjack::Diner.create_test_notifications_checks(*ids,
-      :summary => args[:summary]
-    )
+    ids = args[:ids].split(',') if args[:ids]
+    Flapjack::Diner.create_test_notifications_checks(*ids, :summary => args[:summary])
   end
 
 end

@@ -17,7 +17,7 @@ module Syrup::Contact
   def get(args)
     # Split comma-separated IDs into an array
     ids = args[:ids].split(',') if args[:ids]
-    puts JSON.pretty_generate(Flapjack::Diner.contacts(*ids))
+    print_json Flapjack::Diner.contacts(*ids)
   end
 
   def update(args)

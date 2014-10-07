@@ -12,7 +12,7 @@ module Syrup::Rule
 
   def get
     ids = args[:ids].split(',') if args[:ids]
-    puts JSON.pretty_generate(Flapjack::Diner.notification_rules(*ids))
+    print_json Flapjack::Diner.notification_rules(*ids)
   end
 
   def update

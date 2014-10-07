@@ -6,64 +6,18 @@ require 'syrup.rb'
 require 'trollop'
 require 'flapjack-diner'
 
-$TOP_BANNER = "syrup: Create or manipulate objects in your Flapjack environment."
-
-$SUBCOMMANDS = <<-EOS
-Available subcommands (use --help on them for more info):
-
-syrup contact create
-syrup contact delete
-syrup contact get
-syrup contact update
-
-syrup medium create
-syrup medium delete
-syrup medium get
-syrup medium update
-
-syrup pagerduty create
-syrup pagerduty delete
-syrup pagerduty get
-syrup pagerduty update
-
-syrup rule create
-syrup rule delete
-syrup rule get
-syrup rule update
-
-syrup entity create
-syrup entity delete
-syrup entity get
-syrup entity update
-EOS
-
-
 class App
   include Methadone::Main
   include Methadone::CLILogging
   include SyrupCLI
-
-#  def self.apply_action
-#    meth = self.method(@cli.action)
-#    meth.call()
-#  end
+  extend Syrup::Tools
 
   main do
     # Apply flapjack API path, logger information, etc.
     Flapjack::Diner.base_uri(@cli.global_args[:host]+":"+@cli.global_args[:port])
     Flapjack::Diner.logger = Logger.new(@cli.global_args[:log]) #TODO: Look at combining this with methadone's logging infra.
-    # Apply the action parsed from the command line.
-    # This is defined differently based on which Flapjack object's module was used to extend this class.
-#    self.apply_action
-#    @cli = Cli.new.global_parse
 
-#    puts @cli.global_args
-#    puts @cli.object
-#    puts @cli.action
-#    puts @cli.action_args
-
-#    extend Syrup::Contact
-
+    # Load the methods for the appropriate object
     case @cli.object
     when 'contact'
       extend Syrup::Contact
@@ -81,14 +35,8 @@ class App
       Trollop::die "Need an object type"
     end
 
-    # Get the action argument; call the appropriate method from it.
+    # Get the action argument; call the appropriate method from the extension loaded above
     self.method(@cli.action.gsub('-','_')).call(@cli.action_args)
-#    apply_action
-
-
-#    include object_module
-
-#    puts object_module.methods
   end
 
     @cli = Cli.new

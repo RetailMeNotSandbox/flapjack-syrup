@@ -14,7 +14,7 @@ module Syrup::Medium
     # TODO: Media ID may change when the data handling code is changed, per http://flapjack.io/docs/1.0/jsonapi/?ruby#get-media
     # Split comma-separated IDs into an array
     ids = args[:ids].split(',') if args[:ids]
-    puts JSON.pretty_generate(Flapjack::Diner.media(*ids))
+    print_json Flapjack::Diner.media(*ids)
   end
 
   def update(args)

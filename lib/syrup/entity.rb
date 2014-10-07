@@ -25,15 +25,13 @@ module Syrup::Entity
 
 
   def get(args)
-    if args[:ids] and args[:regex]
-      Trollop::die "Must provide either a list of IDs or a regular expression, not both"
-    end
     ids = args[:ids].split(',') if args[:ids]
-    puts Flapjack::Diner.entities
-    if ids
-      puts Flapjack::Diner.entities(*ids)
-    elsif args[:regex]
-      puts Flapjack::Diner.entities_matching(args[:regex])
+    if args[:regex]
+#      puts Flapjack::Diner.entities_matching(args[:regex])
+      # TODO: entities_matching method is not in the Diner gem but is on the project page.
+      puts "Regex matching not yet implemented in Diner"
+    else
+      print_json Flapjack::Diner.entities(*ids)
     end
   end
 
@@ -49,6 +47,7 @@ module Syrup::Entity
     #TODO: API docs say IDs should be in an array. Diner docs say sequential arguments.
 
     # Loop through all of the add/remove arrays, make a call to update each one
+    # TODO: Add_tags and remove_tags are failing. This might just be a diner docs fail.
     if tags
       tags.each do |tag|
         Flapjack::Diner.update_entities(*ids, :add_tag => tag)
@@ -60,13 +59,13 @@ module Syrup::Entity
       end
     end
     if contacts
-      rcontacts.each do |contact|
-        Flapjack::Diner.update_entities(*ids, :add_contact => tag)
+      contacts.each do |contact|
+        Flapjack::Diner.update_entities(*ids, :add_contact => contact)
       end
     end
     if rcontacts
-      rcontacts.each do |contacts|
-        Flapjack::Diner.update_entities(*ids, :remove_contact => tag)
+      rcontacts.each do |contact|
+        Flapjack::Diner.update_entities(*ids, :remove_contact => contact)
       end
     end
   end
@@ -164,8 +163,8 @@ module Syrup::Entity
   end
 
   def status(args)
-    ids = args[:ids].split(',')
-    Flapjack::Diner.status_report_entities(*ids)
+    ids = args[:ids].split(',') if args[:ids]
+    print_json Flapjack::Diner.status_report_entities(*ids)
   end
 
   # def outages(args)
@@ -193,9 +192,7 @@ module Syrup::Entity
   end
 
   def test(args)
-  ids = args[:ids].split(',')
-    Flapjack::Diner.create_test_notifications_entities(*ids,
-      :summary => args[:summary]
-    )
+    ids = args[:ids].split(',') if args[:ids]
+    Flapjack::Diner.create_test_notifications_entities(*ids, :summary => args[:summary])
   end
 end

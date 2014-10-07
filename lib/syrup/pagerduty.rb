@@ -15,7 +15,7 @@ module Syrup::PagerDuty
     # Note that these are CONTACT ID's and it's returning each contact's associated pagerduty login
     ids = args[:ids].split(',') if args[:ids]
     # Get the credentials
-    puts JSON.pretty_generate(Flapjack::Diner.pagerduty_credentials(*ids))
+    print_json Flapjack::Diner.pagerduty_credentials(*ids)
   end
 
   def update(args)
