@@ -122,12 +122,12 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id, "Unique identifier (generated if omitted)", :type => :string
+          opt :id,         "Unique identifier (generated if omitted)", :type => :string
           opt :first_name, "First name (required)", :type => :string, :required => true
-          opt :last_name, "Last name (required)", :type => :string, :required => true
-          opt :email, "Email address (required)", :type => :string, :required => true
-          opt :timezone, "Time zone", :type => :string
-          opt :tags, "Tags (comma-separated)", :type => :string
+          opt :last_name,  "Last name (required)", :type => :string, :required => true
+          opt :email,      "Email address (required)", :type => :string, :required => true
+          opt :timezone,   "Time zone", :type => :string
+          opt :tags,       "Tags (comma-separated)", :type => :string
         end
       when 'get'
         @action_args = Trollop::options do
@@ -135,18 +135,19 @@ module SyrupCLI
         end
       when 'update'
         @action_args = Trollop::options do
-          opt :ids, "Contact identifiers (comma-separated)", :type => :string
-          opt :first_name, "First name", :type => :string
-          opt :last_name, "Last name", :type => :string
-          opt :email, "Email address", :type => :string
-          opt :timezone, "Time zone", :type => :string
-          opt :add_tags, "Apply tags (comma-separated)", :type => :string
-          opt :remove_tags, "Remove tags (comma-separated)", :type => :string
+          opt :ids,          "Contact identifiers (comma-separated)", :type => :string
+          opt :first_name,   "First name", :type => :string
+          opt :last_name,    "Last name", :type => :string
+          opt :email,        "Email address", :type => :string
+          opt :timezone,     "Time zone", :type => :string
+          opt :add_tags,     "Apply tags (comma-separated)", :type => :string
+          opt :remove_tags,  "Remove tags (comma-separated)", :type => :string
           # TODO: Add support for add_media, remove_media when available
-          opt :add_media, "Add media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
+          opt :add_media,    "Add media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
           opt :remove_media, "Remove media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
-          opt :add_rules, "Apply notification rules to this contact (comma-separated)", :type => :string
+          opt :add_rules,    "Apply notification rules to this contact (comma-separated)", :type => :string
           opt :remove_rules, "Remove notification rules from this contact (comma-separated)", :type => :string
+          opt :tags,         "Tags (comma-separated)", :type => :string
         end
       when 'delete'
         @action_args = Trollop::options do
@@ -164,11 +165,11 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id, "Parent Contact ID", :type => :string
-          opt :type, "Medium Type", :type => :string, :required => true
-          opt :address, "Medium Address", :type => :string, :required => true
-          opt :interval, "Medium Interval", :type => :integer, :required => true
-          opt :rollup_threshold, "Rollup Threshold", :type => :integer, :required => true #TODO: Find out what this actually is
+          opt :id,               "Parent contact ID", :type => :string
+          opt :type,             "Medium type", :type => :string, :required => true
+          opt :address,          "Medium address", :type => :string, :required => true
+          opt :interval,         "Medium interval", :type => :integer, :required => true
+          opt :rollup_threshold, "Rollup threshold", :type => :integer, :required => true #TODO: Find out what this actually is
         end
       when 'get'
         # TODO: Media ID may change when the data handling code is changed, per http://flapjack.io/docs/1.0/jsonapi/?ruby#get-media
@@ -177,9 +178,9 @@ module SyrupCLI
         end
       when 'update'
         @action_args = Trollop::options do
-          opt :ids, "Media identifiers (comma-separated, form \"<contactID>_<type>\")", :type => :string
-          opt :address, "New medium address", :type => :string
-          opt :interval, "New medium interval", :type => :string
+          opt :ids,              "Media identifiers (comma-separated, form \"<contactID>_<type>\")", :type => :string
+          opt :address,          "New medium address", :type => :string
+          opt :interval,         "New medium interval", :type => :string
           opt :rollup_threshold, "New rollup threshold", :type => :string
         end
       when 'delete'
@@ -198,11 +199,11 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id, "Parent contact ID", :type => :string
+          opt :id,          "Parent contact ID", :type => :string
           opt :service_key, "PagerDuty service key", :type => :string
-          opt :subdomain, "PagerDuty subdomain", :type => :string
-          opt :username, "PagerDuty username", :type => :string
-          opt :password, "PagerDuty password", :type => :string
+          opt :subdomain,   "PagerDuty subdomain", :type => :string
+          opt :username,    "PagerDuty username", :type => :string
+          opt :password,    "PagerDuty password", :type => :string
         end
       when 'get'
         @action_args = Trollop::options do
@@ -210,11 +211,11 @@ module SyrupCLI
         end
       when 'update'
         @action_args = Trollop::options do
-          opt :ids, "Parent contact IDs", :type => :string
+          opt :ids,         "Parent contact IDs", :type => :string
           opt :service_key, "PagerDuty service key", :type => :string
-          opt :subdomain, "PagerDuty subdomain", :type => :string
-          opt :username, "PagerDuty username", :type => :string
-          opt :password, "PagerDuty password", :type => :string
+          opt :subdomain,   "PagerDuty subdomain", :type => :string
+          opt :username,    "PagerDuty username", :type => :string
+          opt :password,    "PagerDuty password", :type => :string
         end
       when 'delete'
         @action_args = Trollop::options do
@@ -232,25 +233,25 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :contact_id, "Contact to notify", :type => :string
-          opt :json, "JSON file containing rule definitions", :type => :string, :multi => true
-          opt :entity, "Entity (multiple allowed)", :type => :string, :multi => true
-          opt :regex_entity, "Entity regex (multiple allowed)", :type => :string, :multi => true
-          opt :tags, "Tags (comma-separated)", :type => :string
-          opt :regex_tag, "Tag regex (multiple allowed)", :type => :string, :multi => true
-          opt :time_restrictions, "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.", :type => :string
-#          opt :start_time, "Start time", :type => :string
-#          opt :end_time, "End time", :type => :string
-#          opt :rrules, "Not implemented"
-#          opt :exrules, "Not implemented"
-#          opt :rtimes, "Not implemented"
-#          opt :extimes, "Not implemented"
-          opt :unknown_media, "UNKNOWN notification media types (comma-separated)", :type => :string
-          opt :warning_media, "WARNING notification media types (comma-separated)", :type => :string
-          opt :critical_media, "CRITICAL notification media types (comma-separated)", :type => :string
-          opt :unknown_blackhole, "Ignore UNKNOWN alerts if true"
-          opt :warning_blackhole, "Ignore WARNING alerts if true"
-          opt :critical_blackhole, "Ignore CRITICAL alerts if true"
+          opt :contact_id,         "Contact to notify", :type => :string
+          opt :json,               "JSON file containing rule definitions", :type => :string, :multi => true
+          opt :entity,             "Entity (multiple allowed)", :type => :string, :multi => true
+          opt :regex_entity,       "Entity regex (multiple allowed)", :type => :string, :multi => true
+          opt :tags,               "Tags (comma-separated)", :type => :string
+          opt :regex_tag,          "Tag regex (multiple allowed)", :type => :string, :multi => true
+#          opt :time_restrictions,  "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.)", :type => :string
+#          opt :start_time,         "Start time", :type => :string
+#          opt :end_time,           "End time", :type => :string
+#          opt :rrules,             "Not implemented"
+#          opt :exrules,            "Not implemented"
+#          opt :rtimes,             "Not implemented"
+#          opt :extimes,            "Not implemented"
+          opt :unknown_media,      "UNKNOWN notification media types (comma-separated)", :type => :string
+          opt :warning_media,      "WARNING notification media types (comma-separated)", :type => :string
+          opt :critical_media,     "CRITICAL notification media types (comma-separated)", :type => :string
+          opt :unknown_blackhole,  "Flag to ignore UNKNOWN alerts"
+          opt :warning_blackhole,  "Flag to ignore WARNING alerts"
+          opt :critical_blackhole, "Flag to ignore CRITICAL alerts"
         end
       when 'get'
         @action_args = Trollop::options do
@@ -259,26 +260,32 @@ module SyrupCLI
       when 'update'
         @action_args = Trollop::options do
           # TODO: Verify that these are all full replacement actions, and that there's no add/remove methods
-          opt :ids, "Rule IDs to apply changes to"
-          opt :json, "JSON file containing changes to apply", type => :string, :multi => true
-          opt :entity, "Entity (multiple allowed)", :type => :string, :multi => true
-          opt :regex_entity, "Entity regex (multiple allowed)", :type => :string, :multi => true
-          opt :tags, "Tags (comma-separated)", :type => :string
-          opt :regex_tag, "Tag regex (multiple allowed)", :type => :string, :multi => true
-          opt :time_restrictions, "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.", :type => :string
-#          opt :start_time, "Start time", :type => :string
-#          opt :end_time, "End time", :type => :string
-#          opt :rrules, "Not implemented"
-#          opt :exrules, "Not implemented"
-#          opt :rtimes, "Not implemented"
-#          opt :extimes, "Not implemented"
-          opt :unknown_media, "UNKNOWN notification media types (comma-separated)", :type => :string
-          opt :warning_media, "WARNING notification media types (comma-separated)", :type => :string
-          opt :critical_media, "CRITICAL notification media types (comma-separated)", :type => :string
-          opt :unknown_blackhole, "Ignore UNKNOWN alerts if true"
-          opt :warning_blackhole, "Ignore WARNING alerts if true"
-          opt :critical_blackhole, "Ignore CRITICAL alerts if true"
+          opt :ids,                "Rule IDs to apply changes to", :type => :string
+#          opt :json,               "JSON file containing changes to apply", :type => :string
+          opt :entities,           "Entity names (comma-separated)", :type => :string
+          opt :regex_entities,     "Entity regexes (comma-separated)", :type => :string
+          opt :tags,               "Tags (comma-separated)", :type => :string
+          opt :regex_tags,         "Tag regexes (comma-separated)", :type => :string
+#          opt :time_restrictions,  "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.)", :type => :string
+#          opt :start_time,         "Start time", :type => :string
+#          opt :end_time,           "End time", :type => :string
+#          opt :rrules,             "Not implemented"
+#          opt :exrules,            "Not implemented"
+#          opt :rtimes,             "Not implemented"
+#          opt :extimes,            "Not implemented"
+          opt :unknown_media,      "UNKNOWN notification media types (comma-separated)", :type => :string
+          opt :warning_media,      "WARNING notification media types (comma-separated)", :type => :string
+          opt :critical_media,     "CRITICAL notification media types (comma-separated)", :type => :string
+          opt :unknown_blackhole,  "Ignore UNKNOWN alerts"
+          opt :warning_blackhole,  "Ignore WARNING alerts"
+          opt :critical_blackhole, "Ignore CRITICAL alerts"
+          opt :unknown_active,     "Activate UNKNOWN alerts"
+          opt :warning_active,     "Activate WARNING alerts"
+          opt :critical_active,    "Activate CRITICAL alerts"
         end
+        Trollop::die :unknown_blackhole,  "cannot be called with argument --unknown-active" if @action_args[:unknown_blackhole] and @action_args[:unknown_active]
+        Trollop::die :warning_blackhole,  "cannot be called with argument --warning-active" if @action_args[:warning_blackhole] and @action_args[:warning_active]
+        Trollop::die :critical_blackhole, "cannot be called with argument --critical-active" if @action_args[:critical_blackhole] and @action_args[:critical_active]
       when 'delete'
         @action_args = Trollop::options do
           opt :ids, "Rule identifiers (comma-separated)", :type => :string
@@ -296,17 +303,17 @@ module SyrupCLI
       when 'get'
         # TODO: These are currently mutually exclusive. Should they be?
         @action_args = Trollop::options do
-          opt :ids, "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
+          opt :ids,   "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
           opt :regex, "Return only entities matching this regular expression", :type => :string
         end
         Trollop::die :ids, "cannot be called with argument --regex" if @action_args[:ids] and @action_args[:regex]
       when 'update'
         @action_args = Trollop::options do
           # TODO: Diner project page says there are no valid update field keys yet.
-          opt :ids, "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
-          opt :add_tags, "Apply tags (comma-separated)", :type => :string
-          opt :remove_tags, "Remove tags (comma-separated)", :type => :string
-          opt :add_contacts, "Add contacts for this entity (comma-separated)", :type => :string
+          opt :ids,             "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
+          opt :add_tags,        "Apply tags (comma-separated)", :type => :string
+          opt :remove_tags,     "Remove tags (comma-separated)", :type => :string
+          opt :add_contacts,    "Add contacts for this entity (comma-separated)", :type => :string
           opt :remove_contacts, "Remove contacts for this entity (comma-separated)", :type => :string
         end
       when 'status'
@@ -315,7 +322,7 @@ module SyrupCLI
         end
       when 'test'
         @action_args = Trollop::options do
-          opt :ids, "Entity to test notifications for (comma-separated)", :type => :string
+          opt :ids,     "Entity to test notifications for (comma-separated)", :type => :string
           opt :summary, "Notification text to send", :type => :string
         end
       else
@@ -334,10 +341,10 @@ module SyrupCLI
         end
       when 'update'
         @action_args = Trollop::options do
-          opt :ids, "Check identifiers (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
-          opt :enable, "Enable the check"
-          opt :disable, "Disable the check"
-          opt :add_tags, "Apply tags (comma-separated)", :type => :string
+          opt :ids,         "Check identifiers (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
+          opt :enable,      "Enable the check"
+          opt :disable,     "Disable the check"
+          opt :add_tags,    "Apply tags (comma-separated)", :type => :string
           opt :remove_tags, "Remove tags (comma-separated)", :type => :string
           #TODO: Why is there "add_contact" and "remove_tag" on this?
         end
@@ -347,7 +354,7 @@ module SyrupCLI
         end
       when 'test'
         @action_args = Trollop::options do
-          opt :ids, "Checks to test notifications for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
+          opt :ids,     "Checks to test notifications for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
           opt :summary, "Notification text to send", :type => :string
         end
       else

@@ -35,6 +35,11 @@ class App
       Trollop::die "Need an object type"
     end
 
+    # puts @cli.global_args
+    # puts @cli.object
+    # puts @cli.object_args
+    # puts @cli.action
+    # puts @cli.action_args
     # Get the action argument; call the appropriate method from the extension loaded above
     self.method(@cli.action.gsub('-','_')).call(@cli.action_args)
   end

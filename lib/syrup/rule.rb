@@ -1,30 +1,88 @@
 # TODO: Decide whether to only support json or to support argument-based create/update as well.
 
-require 'json'
 module Syrup::Rule
 
   def create(args)
-    File.open( args[:json], "r" ) do |f|
-      json = JSON.load( f )
+    # File.open( args[:json], "r" ) do |f|
+    #   json = JSON.load( f )
+    # end
+    # Flapjack::Diner.create_notification_rules(args[:contact_id], json)
+
+    entities           = args[:entities].split(',')       if args[:entities]
+    regex_entities     = args[:regex_entities].split(',') if args[:regex_entities]
+    tags               = args[:tags].split(',')           if args[:tags]
+    regex_tags         = args[:regex_tags].split(',')     if args[:regex_tags]
+    unknown_media      = args[:unknown_media].split(',')  if args[:unknown_media]
+    warning_media      = args[:warning_media].split(',')  if args[:warning_media]
+    critical_media     = args[:critical_media].split(',') if args[:critical_media]
+
+    if args[:unknown_blackhole]
+      unknown_blackhole = true
+    elsif args[:unknown_active]
+      unknown_blackhole = false
     end
-    Flapjack::Diner.create_notification_rules(args[:contact_id], json)
+    if args[:warning_blackhole]
+      warning_blackhole = true
+    elsif args[:warning_active]
+      warning_blackhole = false
+    end
+    if args[:critical_blackhole]
+      critical_blackhole = true
+    elsif args[:critical_active]
+      critical_blackhole = false
+    end
+
+    Flapjack::Diner.create_contact_notification_rules(args[:contact_id],[{
+      :entities           => entities,
+      :regex_entities     => regex_entities,
+      :tags               => tags,
+      :regex_tags         => regex_tags,
+      :unknown_media      => unknown_media,
+      :warning_media      => warning_media,
+      :critical_media     => critical_media,
+      :unknown_blackhole  => unknown_blackhole,
+      :warning_blackhole  => warning_blackhole,
+      :critical_blackhole => critical_blackhole
+    }])
   end
 
-  def get
+  def get(args)
     ids = args[:ids].split(',') if args[:ids]
     print_json Flapjack::Diner.notification_rules(*ids)
   end
 
-  def update
-    ids = args[:ids].split(',')
-    File.open( args[:json], "r" ) do |f|
-      json = JSON.load( f )
+  def update(args)
+    ids            = args[:ids].split(',') if args[:ids]
+    changes = {}
+    changes[:entities]           = args[:entities].split(',')       if args[:entities]
+    changes[:regex_entities]     = args[:regex_entities].split(',') if args[:regex_entities]
+    changes[:tags]               = args[:tags].split(',')           if args[:tags]
+    changes[:regex_tags]         = args[:regex_tags].split(',')     if args[:regex_tags]
+    changes[:unknown_media]      = args[:unknown_media].split(',')  if args[:unknown_media]
+    changes[:warning_media]      = args[:warning_media].split(',')  if args[:warning_media]
+    changes[:critical_media]     = args[:critical_media].split(',') if args[:critical_media]
+
+    if args[:unknown_blackhole]
+      changes[:unknown_blackhole] = true
+    elsif args[:unknown_active]
+      changes[:unknown_blackhole] = false
     end
-    Flapjack::Diner.update_notification_rules(*ids,json)
+    if args[:warning_blackhole]
+      changes[:warning_blackhole] = true
+    elsif args[:warning_active]
+      changes[:warning_blackhole] = false
+    end
+    if args[:critical_blackhole]
+      changes[:critical_blackhole] = true
+    elsif args[:critical_active]
+      changes[:critical_blackhole] = false
+    end
+
+    Flapjack::Diner.update_notification_rules(*ids,changes)
     #TODO: How to handle changes to time restrictions?
   end
 
-  def delete
+  def delete(args)
     ids = args[:ids].split(',') if args[:ids]
     Flapjack::Diner.delete_notification_rules(*ids)
   end

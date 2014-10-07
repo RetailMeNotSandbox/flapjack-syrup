@@ -23,8 +23,9 @@ module Syrup::Contact
   def update(args)
     # Split CSV arguments into arrays
     ids    = args[:ids].split(',') if args[:ids]
-    tags   = args[:add_tags].split(',') if args[:add_tags]
-    rtags  = args[:remove_tags].split(',') if args[:remove_tags]
+    tags = args[:tags].split(',') if args[:tags]
+#    tags   = args[:add_tags].split(',') if args[:add_tags]
+#    rtags  = args[:remove_tags].split(',') if args[:remove_tags]
     rules  = args[:add_rules].split(',') if args[:add_rules]
     rrules = args[:remove_rules].split(',') if args[:remove_rules]
     #TODO: Add support for media when available in Flapjack
@@ -35,33 +36,34 @@ module Syrup::Contact
     changes[:last_name]  = args[:last_name] if args[:last_name]
     changes[:email]      = args[:email] if args[:email]
     changes[:timezone]   = args[:timezone] if args[:timezone_name]
-#    changes[:tags]       = tags if tags
+    changes[:tags]       = tags if tags
     # Apply field changes.
     if not changes.empty?
       Flapjack::Diner.update_contacts(*ids, changes)
     end
 
     # Loop through all of the add/remove arrays, make a call to update each one
-    #TODO: This isn't working, even though it appears to be how the Diner page says to do it.
-    # Maybe check the code?
-    if tags
-      tags.each do |tag|
-        Flapjack::Diner.update_contacts(*ids, :add_tag => tag)
-      end
-    end
-    if rtags
-      rtags.each do |tag|
-        Flapjack::Diner.update_contacts(*ids, :remove_tag => tag)
-      end
-    end
+    #TODO: 'add_tag' and 'remove_tag' are not considered valid update fields by Diner...
+    #TODO And passing :tags as a change goes through, but doesn't actually change anything.
+
+    # if tags
+    #   tags.each do |tag|
+    #     Flapjack::Diner.update_contacts(*ids, :add_tag => tag)
+    #   end
+    # end
+    # if rtags
+    #   rtags.each do |tag|
+    #     Flapjack::Diner.update_contacts(*ids, :remove_tag => tag)
+    #   end
+    # end
     if rules
       rules.each do |rule|
-        Flapjack::Diner.update_contacts(*ids, :add_notification_rule => tag)
+        Flapjack::Diner.update_contacts(*ids, :add_notification_rule => rule)
       end
     end
     if rrules
       rrules.each do |rule|
-        Flapjack::Diner.update_contacts(*ids, :remove_notification_rule => tag)
+        Flapjack::Diner.update_contacts(*ids, :remove_notification_rule => rule)
       end
     end
   end
