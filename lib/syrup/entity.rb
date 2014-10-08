@@ -20,8 +20,6 @@ module Syrup::Entity
 
   def update(args)
     ids  = args[:ids].split(',')
-    tags = args[:add_tags].split(',') if args[:add_tags]
-    rtags = args[:remove_tags].split(',') if args[:remove_tags]
     contacts = args[:add_contacts].split(',') if args[:add_contacts]
     rcontacts = args[:remove_contacts].split(',') if args[:remove_contacts]
 
@@ -29,17 +27,7 @@ module Syrup::Entity
     # There are no valid update field keys yet, per the flapjack-diner docs.
 
     # Loop through all of the add/remove arrays, make a call to update each one
-    # TODO: Add_tags and remove_tags are failing. This might just be a diner docs fail.
-    if tags
-      tags.each do |tag|
-        Flapjack::Diner.update_entities(*ids, :add_tag => tag)
-      end
-    end
-    if rtags
-      rtags.each do |tag|
-        Flapjack::Diner.update_entities(*ids, :remove_tag => tag)
-      end
-    end
+    # TODO: Add_tags and remove_tags are in the docs but don't work. This might just be a diner docs fail.
     if contacts
       contacts.each do |contact|
         Flapjack::Diner.update_entities(*ids, :add_contact => contact)

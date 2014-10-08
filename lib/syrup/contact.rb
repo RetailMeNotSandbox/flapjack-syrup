@@ -1,7 +1,6 @@
 module Syrup::Contact
 
   def create(args)
-    #TODO: Add a feature to automatically create an email medium based on the email arg.
     # Split comma-separated tags into an array
     tags = args[:tags].split(',') if args[:tags]
     # Create the email address medium to attach to the contact
@@ -13,12 +12,11 @@ module Syrup::Contact
           :address => args[:email],
           :interval => args[:interval],
           :rollup_threshold => args[:rollup_threshold]
-        }
-      }
+      } }
     end
     # Create the contact
     puts Flapjack::Diner.create_contacts([{
-      :id         => args[:id], # Passing nil is good enough to get it to create an ID for you.
+      :id         => args[:id],
       :first_name => args[:first_name],
       :last_name  => args[:last_name],
       :email      => args[:email],
@@ -48,17 +46,16 @@ module Syrup::Contact
 
     # Collect all the changes into a hash, and omit fields that aren't changing
     changes = {}
-    changes[:first_name]         = args[:first_name] if args[:first_name]
-    changes[:last_name]          = args[:last_name] if args[:last_name]
-    changes[:email]              = args[:email] if args[:email]
-    changes[:timezone]           = args[:timezone] if args[:timezone_name]
-    changes[:tags]               = tags if tags
+    changes[:first_name] = args[:first_name] if args[:first_name]
+    changes[:last_name]  = args[:last_name] if args[:last_name]
+    changes[:email]      = args[:email] if args[:email]
+    changes[:timezone]   = args[:timezone] if args[:timezone_name]
+    changes[:tags]       = tags if tags
 
     # Apply field changes.
     if not changes.empty?
       Flapjack::Diner.update_contacts(*ids, changes)
     end
-
     # Apply all notification rule and entity changes
     if arules
       arules.each do |rule|

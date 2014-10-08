@@ -35,11 +35,6 @@ class App
       Trollop::die "Need an object type"
     end
 
-    # puts @cli.global_args
-    # puts @cli.object
-    # puts @cli.object_args
-    # puts @cli.action
-    # puts @cli.action_args
     # Get the action argument; call the appropriate method from the extension loaded above
     self.method(@cli.action.gsub('-','_')).call(@cli.action_args)
   end
@@ -47,9 +42,6 @@ class App
     @cli = Cli.new
     @cli.parse
 
-
-  # This is from methadone. Replace it because we're using Trollop to handle arguments.
-  version Syrup::VERSION
 
   use_log_level_option :toggle_debug_on_signal => 'USR1'
 

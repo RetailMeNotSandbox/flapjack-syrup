@@ -73,6 +73,7 @@ module SyrupCLI
     def parse
       @global_parser = Trollop::Parser.new do
 #        version "sensu-cli version: #{SensuCli::VERSION}"
+        version "\n\rsyrup version #{Syrup::VERSION}"
         banner "\n\rsyrup: Create or manipulate objects in your Flapjack environment.\n\r"
         banner "Available subcommands: (syrup SUB-COMMAND --help for detailed usage information)\n\r"
         banner CONTACT_BANNER
@@ -132,7 +133,7 @@ module SyrupCLI
           opt :no_media,         "Do not automatically create the email address medium"
           opt :timezone,         "Time zone", :type => :string
           opt :tags,             "Tags (comma-separated)", :type => :string
-          #TODO: There appears to be no way to set media, rules, or entities
+          #TODO: There appears to be no way to set rules or entities on creation
         end
       when 'get'
         @action_args = Trollop::options do

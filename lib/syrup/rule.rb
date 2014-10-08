@@ -1,13 +1,7 @@
-# TODO: Decide whether to only support json or to support argument-based create/update as well.
-
 module Syrup::Rule
 
   def create(args)
-    # File.open( args[:json], "r" ) do |f|
-    #   json = JSON.load( f )
-    # end
-    # Flapjack::Diner.create_notification_rules(args[:contact_id], json)
-
+    # Split CSV arguments into arrays
     entities           = args[:entities].split(',')       if args[:entities]
     regex_entities     = args[:regex_entities].split(',') if args[:regex_entities]
     tags               = args[:tags].split(',')           if args[:tags]
@@ -16,6 +10,7 @@ module Syrup::Rule
     warning_media      = args[:warning_media].split(',')  if args[:warning_media]
     critical_media     = args[:critical_media].split(',') if args[:critical_media]
 
+    # Determine values for blackhole properties
     if args[:unknown_blackhole]
       unknown_blackhole = true
     elsif args[:unknown_active]
@@ -32,6 +27,8 @@ module Syrup::Rule
       critical_blackhole = false
     end
 
+    # Create the notification rule
+    # TODO: Add time restrictions
     Flapjack::Diner.create_contact_notification_rules(args[:contact_id],[{
       :entities           => entities,
       :regex_entities     => regex_entities,
@@ -52,8 +49,9 @@ module Syrup::Rule
   end
 
   def update(args)
-    ids            = args[:ids].split(',') if args[:ids]
     changes = {}
+    # Split CSV arguments into arrays
+    ids                          = args[:ids].split(',') if args[:ids]
     changes[:entities]           = args[:entities].split(',')       if args[:entities]
     changes[:regex_entities]     = args[:regex_entities].split(',') if args[:regex_entities]
     changes[:tags]               = args[:tags].split(',')           if args[:tags]
@@ -62,6 +60,7 @@ module Syrup::Rule
     changes[:warning_media]      = args[:warning_media].split(',')  if args[:warning_media]
     changes[:critical_media]     = args[:critical_media].split(',') if args[:critical_media]
 
+    # Determine values for blackhole properties
     if args[:unknown_blackhole]
       changes[:unknown_blackhole] = true
     elsif args[:unknown_active]
@@ -78,6 +77,7 @@ module Syrup::Rule
       changes[:critical_blackhole] = false
     end
 
+    # Apply the changes
     Flapjack::Diner.update_notification_rules(*ids,changes)
     #TODO: How to handle changes to time restrictions?
   end
