@@ -1,16 +1,30 @@
 module Syrup::Contact
 
   def create(args)
+    #TODO: Add a feature to automatically create an email medium based on the email arg.
     # Split comma-separated tags into an array
     tags = args[:tags].split(',') if args[:tags]
+    # Create the email address medium to attach to the contact
+    if args[:no_media]
+      media = {}
+    else
+      media = {
+        :email => {
+          :address => args[:email],
+          :interval => args[:interval],
+          :rollup_threshold => args[:rollup_threshold]
+        }
+      }
+    end
     # Create the contact
-    Flapjack::Diner.create_contacts([{
+    puts Flapjack::Diner.create_contacts([{
       :id         => args[:id], # Passing nil is good enough to get it to create an ID for you.
       :first_name => args[:first_name],
       :last_name  => args[:last_name],
       :email      => args[:email],
       :timezone   => args[:timezone],
-      :tags       => tags
+      :tags       => tags,
+      :media => media
     }])
   end
 
@@ -22,48 +36,48 @@ module Syrup::Contact
 
   def update(args)
     # Split CSV arguments into arrays
-    ids    = args[:ids].split(',') if args[:ids]
-    tags = args[:tags].split(',') if args[:tags]
-#    tags   = args[:add_tags].split(',') if args[:add_tags]
-#    rtags  = args[:remove_tags].split(',') if args[:remove_tags]
-    rules  = args[:add_rules].split(',') if args[:add_rules]
-    rrules = args[:remove_rules].split(',') if args[:remove_rules]
-    #TODO: Add support for media when available in Flapjack
+    ids       = args[:ids].split(',') if args[:ids]
+    tags      = args[:tags].split(',') if args[:tags]
+    arules    = args[:add_rules].split(',') if args[:add_rules]
+    rrules    = args[:remove_rules].split(',') if args[:remove_rules]
+    aentities = args[:add_entities].split(',') if args[:add_entities]
+    rentities = args[:remove_entities].split(',') if args[:remove_entities]
+    # TODO: Add/remove tags doesn't seem to be in the Diner codebase.
+    # TODO: Add/remove media isn't supported yet but will be added when Flapjack can support it.
+    # NOTE: Replacing entire array of rules and entities is NOT supported.
 
     # Collect all the changes into a hash, and omit fields that aren't changing
     changes = {}
-    changes[:first_name] = args[:first_name] if args[:first_name]
-    changes[:last_name]  = args[:last_name] if args[:last_name]
-    changes[:email]      = args[:email] if args[:email]
-    changes[:timezone]   = args[:timezone] if args[:timezone_name]
-    changes[:tags]       = tags if tags
+    changes[:first_name]         = args[:first_name] if args[:first_name]
+    changes[:last_name]          = args[:last_name] if args[:last_name]
+    changes[:email]              = args[:email] if args[:email]
+    changes[:timezone]           = args[:timezone] if args[:timezone_name]
+    changes[:tags]               = tags if tags
+
     # Apply field changes.
     if not changes.empty?
       Flapjack::Diner.update_contacts(*ids, changes)
     end
 
-    # Loop through all of the add/remove arrays, make a call to update each one
-    #TODO: 'add_tag' and 'remove_tag' are not considered valid update fields by Diner...
-    #TODO And passing :tags as a change goes through, but doesn't actually change anything.
-
-    # if tags
-    #   tags.each do |tag|
-    #     Flapjack::Diner.update_contacts(*ids, :add_tag => tag)
-    #   end
-    # end
-    # if rtags
-    #   rtags.each do |tag|
-    #     Flapjack::Diner.update_contacts(*ids, :remove_tag => tag)
-    #   end
-    # end
-    if rules
-      rules.each do |rule|
+    # Apply all notification rule and entity changes
+    if arules
+      arules.each do |rule|
         Flapjack::Diner.update_contacts(*ids, :add_notification_rule => rule)
       end
     end
     if rrules
       rrules.each do |rule|
         Flapjack::Diner.update_contacts(*ids, :remove_notification_rule => rule)
+      end
+    end
+    if aentities
+      aentities.each do |entity|
+        Flapjack::Diner.update_contacts(*ids, :add_entity => entity)
+      end
+    end
+    if rentities
+      rentities.each do |entity|
+        Flapjack::Diner.update_contacts(*ids, :remove_entity => entity)
       end
     end
   end

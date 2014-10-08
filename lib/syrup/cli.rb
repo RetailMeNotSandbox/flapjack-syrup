@@ -122,12 +122,17 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id,         "Unique identifier (generated if omitted)", :type => :string
-          opt :first_name, "First name (required)", :type => :string, :required => true
-          opt :last_name,  "Last name (required)", :type => :string, :required => true
-          opt :email,      "Email address (required)", :type => :string, :required => true
-          opt :timezone,   "Time zone", :type => :string
-          opt :tags,       "Tags (comma-separated)", :type => :string
+          opt :json,             "JSON argument file (multiple allowed) - command-line args will take precedence over json data", :type => :string, :multi => true
+          opt :id,               "Unique identifier (generated if omitted)", :type => :string
+          opt :first_name,       "First name (required)", :type => :string, :required => true
+          opt :last_name,        "Last name (required)", :type => :string, :required => true
+          opt :email,            "Email address (required)", :type => :string, :required => true
+          opt :interval,         "Notification interval for email", :type => :integer, :default => 7200
+          opt :rollup_threshold, "Rollup threshold for email", :type => :integer, :default => 0
+          opt :no_media,         "Do not automatically create the email address medium"
+          opt :timezone,         "Time zone", :type => :string
+          opt :tags,             "Tags (comma-separated)", :type => :string
+          #TODO: There appears to be no way to set media, rules, or entities
         end
       when 'get'
         @action_args = Trollop::options do
@@ -135,19 +140,21 @@ module SyrupCLI
         end
       when 'update'
         @action_args = Trollop::options do
-          opt :ids,          "Contact identifiers (comma-separated)", :type => :string
-          opt :first_name,   "First name", :type => :string
-          opt :last_name,    "Last name", :type => :string
-          opt :email,        "Email address", :type => :string
-          opt :timezone,     "Time zone", :type => :string
-          opt :add_tags,     "Apply tags (comma-separated)", :type => :string
-          opt :remove_tags,  "Remove tags (comma-separated)", :type => :string
+          opt :ids,             "Contact identifiers (comma-separated)", :type => :string, :required => true
+          opt :first_name,      "First name", :type => :string
+          opt :last_name,       "Last name", :type => :string
+          opt :email,           "Email address (of the CONTACT, not the notification medium)", :type => :string
+          opt :timezone,        "Time zone", :type => :string
+          opt :tags,            "Replace all tags on contact (comma-separated)", :type => :string
+#          opt :add_tags,        "Apply tags (comma-separated)", :type => :string
+#          opt :remove_tags,     "Remove tags (comma-separated)", :type => :string
+          opt :add_entities,    "Link to entities (comma-separated)", :type => :string
+          opt :remove_entities, "Unlink from entities (comma-separated)", :type => :string
           # TODO: Add support for add_media, remove_media when available
-          opt :add_media,    "Add media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
-          opt :remove_media, "Remove media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
-          opt :add_rules,    "Apply notification rules to this contact (comma-separated)", :type => :string
-          opt :remove_rules, "Remove notification rules from this contact (comma-separated)", :type => :string
-          opt :tags,         "Tags (comma-separated)", :type => :string
+#          opt :add_media,       "Add media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
+#          opt :remove_media,    "Remove media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
+          opt :add_rules,       "Apply notification rules (comma-separated)", :type => :string
+          opt :remove_rules,    "Remove notification rules (comma-separated)", :type => :string
         end
       when 'delete'
         @action_args = Trollop::options do
@@ -168,8 +175,8 @@ module SyrupCLI
           opt :id,               "Parent contact ID", :type => :string
           opt :type,             "Medium type", :type => :string, :required => true
           opt :address,          "Medium address", :type => :string, :required => true
-          opt :interval,         "Medium interval", :type => :integer, :required => true
-          opt :rollup_threshold, "Rollup threshold", :type => :integer, :required => true #TODO: Find out what this actually is
+          opt :interval,         "Medium interval", :default => 7200, :type => :integer, :required => true
+          opt :rollup_threshold, "Rollup threshold", :default => 0, :type => :integer, :required => true #TODO: Find out what this actually is
         end
       when 'get'
         # TODO: Media ID may change when the data handling code is changed, per http://flapjack.io/docs/1.0/jsonapi/?ruby#get-media
@@ -301,10 +308,10 @@ module SyrupCLI
       @action = ARGV.shift
       case @action
       when 'get'
-        # TODO: These are currently mutually exclusive. Should they be?
+        # TODO: Regex not yet implemented in diner. When it is - should these be mutually exclusive?
         @action_args = Trollop::options do
           opt :ids,   "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
-          opt :regex, "Return only entities matching this regular expression", :type => :string
+#          opt :regex, "Return only entities matching this regular expression", :type => :string
         end
         Trollop::die :ids, "cannot be called with argument --regex" if @action_args[:ids] and @action_args[:regex]
       when 'update'
