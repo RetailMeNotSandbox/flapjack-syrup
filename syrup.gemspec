@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Syrup::VERSION
   spec.authors       = ["Geoff Hicks"]
   spec.email         = ["ghicks@rmn.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{syrup: Create and modify resources in your Flapjack environment.}
+#  spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
   spec.license       = "mit"
 
@@ -19,7 +19,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
   spec.add_development_dependency('rdoc')
   spec.add_development_dependency('aruba')
   spec.add_development_dependency('rake', '~> 0.9.2')
