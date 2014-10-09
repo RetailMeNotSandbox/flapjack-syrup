@@ -23,48 +23,6 @@ Global arguments:
      --version, -v:   Print version and exit
         --help, -e:   Show this message
 
-Available commands are listed below.
-
-### contact
-* [contact create](#contact create)
-* [contact get](#contact get)
-* [contact update](#contact update)
-* [contact delete](#contact delete)
-
-### medium
-* [medium create](#medium create)
-* [medium get](#medium get)
-* [medium update](#medium update)
-* [medium delete](#medium delete)
-
-### pagerduty
-* [pagerduty create](#pagerduty create)
-* [pagerduty get](#pagerduty get)
-* [pagerduty update](#pagerduty update)
-* [pagerduty delete](#pagerduty delete)
-
-### rule
-* [rule create](#rule create)
-* [rule get](#rule get)
-* [rule update](#rule update)
-* [rule delete](#rule delete)
-
-### entity
-* [entity get](#entity get)
-* [entity update](#entity update)
-* [entity status](#entity create)
-* [entity test](#entity delete)
-
-### check
-* [check get](#check get)
-* [check update](#check update)
-* [check status](#check create)
-* [check test](#check delete)
-
-----
-
-
-
 ### contact create
 
 Create a new contact.
