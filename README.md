@@ -248,7 +248,7 @@ Notification rules monitor a specific set of entities. This can be defined in an
   * A list of entity tags
   * A regular expression for entity tags
 
-Each rule has a single contact to notify, and a set of media types to use for each alert type (UNKNOWN, WARNING, CRITICAL).
+Each rule has a single contact to notify, and a set of media types to use for each alert type (`UNKNOWN`, `WARNING`, `CRITICAL`).
 
 Notifications can be disabled for an alert type by setting the "blackhole" state on that type.
 
@@ -293,12 +293,13 @@ Modify a notification rule.
 Specify IDs as comma-separated values, or no IDs to modify all.
 
 Notification rules monitor a specific set of entities. This can be defined in any combination of four ways:
+
   * A list of entity names
   * A regular expression for entity names
   * A list of entity tags
   * A regular expression for entity tags
 
-Each rule has a single contact to notify, and a set of media types to use for each alert type (UNKNOWN, WARNING, CRITICAL).
+Each rule has a single contact to notify, and a set of media types to use for each alert type (`UNKNOWN`, `WARNING`, `CRITICAL`).
 
 Notifications can be disabled for an alert type by setting the "blackhole" flag, or reactivated with the "active" flag.
 
