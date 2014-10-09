@@ -326,7 +326,7 @@ module SyrupCLI
       when 'delete'
         @action_args = Trollop::options do
           banner <<-EOS.gsub(/^ {12}/, '')
-            \n\rsyrup medium delete: Delete PagerDuty credentials from a contact.
+            \n\rsyrup pagerduty delete: Delete PagerDuty credentials from a contact.
 
             Specify contact IDs as comma-separated values.
 
