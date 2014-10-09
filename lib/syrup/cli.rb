@@ -82,7 +82,7 @@ module SyrupCLI
         banner RULE_BANNER
         banner ENTITY_BANNER
         banner CHECK_BANNER
-        text "Global options:"
+        banner "Global options:"
         opt :host, "Host to connect to", :default => "localhost"
         opt :port, "Port to connect to", :default => "3081"
         opt :log, "Flapjack API log", :default => "flapjack_diner.log"
@@ -123,24 +123,55 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :json,             "JSON argument file (multiple allowed) - command-line args will take precedence over json data", :type => :string, :multi => true
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup contact create: Create a new contact.
+
+            By default, this will create a new e-mail medium attached to the contact.
+
+            Example: syrup --GLOBALS contact create --first_name FIRST --last_name LAST --email EMAIL
+
+            Options:
+          EOS
+          # "\n\rsyrup contact create: Create a new contact."
+          # banner "\n\rBy default, this will create a new e-mail medium attached to the contact."
+          # banner "\n\rExample: syrup --GLOBALS contact create --first_name FIRST --last_name LAST --email EMAIL"
+          # banner "\n\rOptions: "
+#          opt :json,             "JSON argument file (multiple allowed) - command-line args will take precedence over json data", :type => :string, :multi => true
           opt :id,               "Unique identifier (generated if omitted)", :type => :string
           opt :first_name,       "First name (required)", :type => :string, :required => true
           opt :last_name,        "Last name (required)", :type => :string, :required => true
           opt :email,            "Email address (required)", :type => :string, :required => true
           opt :interval,         "Notification interval for email", :type => :integer, :default => 7200
           opt :rollup_threshold, "Rollup threshold for email", :type => :integer, :default => 0
-          opt :no_media,         "Do not automatically create the email address medium"
+          opt :no_media,         "Do not automatically create the email medium"
           opt :timezone,         "Time zone", :type => :string
           opt :tags,             "Tags (comma-separated)", :type => :string
           #TODO: There appears to be no way to set rules or entities on creation
         end
       when 'get'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup contact get: Get JSON contact data.
+
+            Specify IDs as comma-separated values, or no IDs to get all contacts.
+
+            Example: syrup --GLOBALS contact get [--ids FIRST,SECOND,THIRD]
+
+            Options:
+          EOS
           opt :ids, "Contact identifiers (comma-separated, or get all if omitted)", :type => :string
         end
       when 'update'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup contact update: Modify existing contacts.
+
+            Specify IDs as comma-separated values, or no IDs to update all contacts.
+
+            Example: syrup --GLOBALS contact update [--ids FIRST,SECOND] [--first_name FIRST] [--add_entities ID1,ID2,ID3]
+
+            Options:
+          EOS
           opt :ids,             "Contact identifiers (comma-separated)", :type => :string, :required => true
           opt :first_name,      "First name", :type => :string
           opt :last_name,       "Last name", :type => :string
@@ -159,7 +190,16 @@ module SyrupCLI
         end
       when 'delete'
         @action_args = Trollop::options do
-          opt :ids, "Contact identifiers (comma-separated)", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup contact delete: Get JSON medium data.
+
+            Specify IDs as comma-separated values.
+
+            Example: syrup --GLOBALS contact delete --ids FIRST,SECOND,THIRD
+
+            Options:
+          EOS
+          opt :ids, "Contact identifiers (comma-separated)", :type => :string, :required => true
         end
       else
         explode(opts)
@@ -173,19 +213,46 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id,               "Parent contact ID", :type => :string
-          opt :type,             "Medium type", :type => :string, :required => true
-          opt :address,          "Medium address", :type => :string, :required => true
-          opt :interval,         "Medium interval", :default => 7200, :type => :integer, :required => true
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup medium create: Create a new notification medium for a contact.
+
+            Supported media types are 'email', 'jabber', and 'sms'. PagerDuty is handled separately - see 'syrup pagerduty --help'.
+
+            Example: syrup --GLOBALS medium create --id CONTACT --type TYPE --address ADDRESS
+
+            Options:
+          EOS
+          opt :id,               "Parent contact ID (required)", :type => :string, :required => true
+          opt :type,             "Medium type (required)", :type => :string, :required => true
+          opt :address,          "Medium address (required)", :type => :string, :required => true
+          opt :interval,         "Notification interval", :default => 7200, :type => :integer, :required => true
           opt :rollup_threshold, "Rollup threshold", :default => 0, :type => :integer, :required => true #TODO: Find out what this actually is
         end
       when 'get'
         # TODO: Media ID may change when the data handling code is changed, per http://flapjack.io/docs/1.0/jsonapi/?ruby#get-media
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup medium get: Get JSON medium data.
+
+            Specify IDs as comma-separated values, or no IDs to get all media.
+
+            Example: syrup --GLOBALS medium get [--ids FIRST,SECOND,THIRD]
+
+            Options:
+          EOS
           opt :ids, "Media Identifiers (comma-separated, form \"<contactID>_<type>\")", :type => :string
         end
       when 'update'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup medium update: Modify existing media.
+
+            Specify IDs as comma-separated values, or no IDs to update all media.
+
+            Example: syrup --GLOBALS medium update [--ids FIRST,SECOND] [--address ADDRESS] [--interval INTERVAL]
+
+            Options:
+          EOS
           opt :ids,              "Media identifiers (comma-separated, form \"<contactID>_<type>\")", :type => :string
           opt :address,          "New medium address", :type => :string
           opt :interval,         "New medium interval", :type => :string
@@ -193,7 +260,16 @@ module SyrupCLI
         end
       when 'delete'
         @action_args = Trollop::options do
-          opt :ids, "Media identifiers (comma-separated, form \"<contactID>_<type>\")", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup medium delete: Get JSON medium data.
+
+            Specify IDs as comma-separated values.
+
+            Example: syrup --GLOBALS medium delete --ids FIRST,SECOND,THIRD
+
+            Options:
+          EOS
+          opt :ids, "Media identifiers (comma-separated, form \"<contactID>_<type>\", required)", :type => :string, :required => true
         end
       else
         explode(opts)
@@ -207,18 +283,45 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :id,          "Parent contact ID", :type => :string
-          opt :service_key, "PagerDuty service key", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup pagerduty create: Give PagerDuty credentials to a contact.
+
+            PagerDuty is handled separately from media because it uses its own unique API calls.
+
+            Example: syrup --GLOBALS pagerduty create --id CONTACT --service_key KEY --username USER --password PASS [--subdomain DOMAIN]
+
+            Options:
+          EOS
+          opt :id,          "Parent contact ID (required)", :type => :string, :required => true
+          opt :service_key, "PagerDuty service key (required)", :type => :string, :required => true
           opt :subdomain,   "PagerDuty subdomain", :type => :string
-          opt :username,    "PagerDuty username", :type => :string
-          opt :password,    "PagerDuty password", :type => :string
+          opt :username,    "PagerDuty username (required)", :type => :string, :required => true
+          opt :password,    "PagerDuty password (required)", :type => :string, :required => true
         end
       when 'get'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup pagerduty get: Get JSON pagerduty credentials.
+
+            Specify contact IDs as comma-separated values, or no IDs to get all.
+
+            Example: syrup --GLOBALS pagerduty get [--ids FIRST,SECOND,THIRD]
+
+            Options:
+          EOS
           opt :ids, "Contact identifiers (comma-separated, or get all if omitted)", :type => :string
         end
       when 'update'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup pagerduty get: Modify existing pagerduty credentials.
+
+            Specify contact IDs as comma-separated values, or no IDs to update all.
+
+            Example: syrup --GLOBALS pagerduty update [--ids FIRST,SECOND] [--username USER] [--password PASS]
+
+            Options:
+          EOS
           opt :ids,         "Parent contact IDs", :type => :string
           opt :service_key, "PagerDuty service key", :type => :string
           opt :subdomain,   "PagerDuty subdomain", :type => :string
@@ -227,7 +330,16 @@ module SyrupCLI
         end
       when 'delete'
         @action_args = Trollop::options do
-          opt :ids, "Contact identifiers (comma-separated)", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup medium delete: Delete PagerDuty credentials from a contact.
+
+            Specify contact IDs as comma-separated values.
+
+            Example: syrup --GLOBALS pagerduty delete --ids FIRST,SECOND,THIRD
+
+            Options:
+          EOS
+          opt :ids, "Contact identifiers (comma-separated, required)", :type => :string, :required => true
         end
       else
         explode(opts)
