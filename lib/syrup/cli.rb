@@ -132,20 +132,15 @@ module SyrupCLI
 
             Options:
           EOS
-          # "\n\rsyrup contact create: Create a new contact."
-          # banner "\n\rBy default, this will create a new e-mail medium attached to the contact."
-          # banner "\n\rExample: syrup --GLOBALS contact create --first_name FIRST --last_name LAST --email EMAIL"
-          # banner "\n\rOptions: "
-#          opt :json,             "JSON argument file (multiple allowed) - command-line args will take precedence over json data", :type => :string, :multi => true
           opt :id,               "Unique identifier (generated if omitted)", :type => :string
           opt :first_name,       "First name (required)", :type => :string, :required => true
           opt :last_name,        "Last name (required)", :type => :string, :required => true
           opt :email,            "Email address (required)", :type => :string, :required => true
           opt :interval,         "Notification interval for email", :type => :integer, :default => 7200
           opt :rollup_threshold, "Rollup threshold for email", :type => :integer, :default => 0
-          opt :no_media,         "Do not automatically create the email medium"
           opt :timezone,         "Time zone", :type => :string
           opt :tags,             "Tags (comma-separated)", :type => :string
+          opt :no_media,         "Do not automatically create the email medium"
           #TODO: There appears to be no way to set rules or entities on creation
         end
       when 'get'
@@ -191,7 +186,7 @@ module SyrupCLI
       when 'delete'
         @action_args = Trollop::options do
           banner <<-EOS.gsub(/^ {12}/, '')
-            \n\rsyrup contact delete: Get JSON medium data.
+            \n\rsyrup contact delete: Delete contacts.
 
             Specify IDs as comma-separated values.
 
@@ -261,7 +256,7 @@ module SyrupCLI
       when 'delete'
         @action_args = Trollop::options do
           banner <<-EOS.gsub(/^ {12}/, '')
-            \n\rsyrup medium delete: Get JSON medium data.
+            \n\rsyrup medium delete: Delete media.
 
             Specify IDs as comma-separated values.
 
