@@ -23,6 +23,7 @@ Global arguments:
      --version, -v:   Print version and exit
         --help, -e:   Show this message
 
+
 Available commands are listed below.
 
 ### contact create
@@ -410,7 +411,7 @@ Options:
     --summary, -s <s>:   Notification text to send
            --help, -h:   Show this message
 
-### check get
+<!--### check get
 
 Get JSON check data.
 
@@ -426,6 +427,7 @@ Options:
 
     --ids, -i <s>:   Check identifiers (comma-separated, or all if omitted, format "<entity_name>:<check_name>")
        --help, -h:   Show this message
+-->
 
 ### check update
 
@@ -435,18 +437,20 @@ Specify IDs as comma-separated values, or no IDs to update all.
 
 Check IDS are a combination of the entity name and check name, separated by a colon.
 
+Note that tagging support is listed on the flapjack-diner page, and may be coming with the next Flapjack release.
+
+WARNING: There is no way to re-enable a check via the API once it has been disabled! Flapjack will re-enable it when a new event is received for it.
+
+
 Example:
 
     syrup --GLOBALS check update [--ids ENTITY:CHECK,ENTITY:CHECK] [--add_tags TAG,TAG] [--disable]
 
 Options:
 
-            --ids, -i <s>:   Check identifiers (comma-separated, format "<entity_name>:<check_name>")
-             --enable, -e:   Enable the check
-            --disable, -d:   Disable the check
-       --add-tags, -a <s>:   Apply tags (comma-separated)
-    --remove-tags, -r <s>:   Remove tags (comma-separated)
-               --help, -h:   Show this message
+    --ids, -i <s>:   Check identifiers (comma-separated, format "<entity_name>:<check_name>")
+    --disable, -d:   Disable the check
+       --help, -h:   Show this message
 
 ### check status
 

@@ -56,9 +56,9 @@ module SyrupCLI
           syrup entity status
           syrup entity test\n\r
         EOS
+        # TODO: Re-add 'syrup check get' if it turns out to be a valid option
     CHECK_BANNER = <<-EOS.gsub(/^ {10}/, '')
           ** Check Commands **
-          syrup check get
           syrup check update
           syrup check status
           syrup check test\n\r
@@ -544,23 +544,25 @@ module SyrupCLI
       opts = subparser('CHECK')
       @action = ARGV.shift
       case @action
-      when 'get'
-        @action_args = Trollop::options do
-          banner <<-EOS.gsub(/^ {12}/, '')
-            \n\rsyrup check get: Get JSON check data.
+        # TODO: 'get' doesn't actually do anything - see https://github.com/flapjack/flapjack-diner/issues/38
+      # when 'get'
+      #   @action_args = Trollop::options do
+      #     banner <<-EOS.gsub(/^ {12}/, '')
+      #       \n\rsyrup check get: Get JSON check data.
 
-            Specify IDs as comma-separated values, or no IDs to get all.
+      #       Specify IDs as comma-separated values, or no IDs to get all.
 
-            Check IDS are a combination of the entity name and check name, separated by a colon.
+      #       Check IDS are a combination of the entity name and check name, separated by a colon.
 
-            Example: syrup --GLOBALS check get [--ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK]
+      #       Example: syrup --GLOBALS check get [--ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK]
 
-            Options:
-          EOS
-          opt :ids, "Check identifiers (comma-separated, or all if omitted, format \"<entity_name>:<check_name>\")", :type => :string
-        end
+      #       Options:
+      #     EOS
+      #     opt :ids, "Check identifiers (comma-separated, or all if omitted, format \"<entity_name>:<check_name>\")", :type => :string
+      #   end
       when 'update'
         @action_args = Trollop::options do
+          # TODO: Consider switching this to just be syrup check delete.
           banner <<-EOS.gsub(/^ {12}/, '')
             \n\rsyrup check update: Modify a check.
 
@@ -570,14 +572,15 @@ module SyrupCLI
 
             Example: syrup --GLOBALS check update [--ids ENTITY:CHECK,ENTITY:CHECK] [--add_tags TAG,TAG] [--disable]
 
+            WARNING: There is no way to re-enable a check via the API once it has been disabled! Flapjack will re-enable it when a new event is received for it.
+
             Options:
           EOS
           opt :ids,         "Check identifiers (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
-          opt :enable,      "Enable the check"
-          opt :disable,     "Disable the check"
-          opt :add_tags,    "Apply tags (comma-separated)", :type => :string
-          opt :remove_tags, "Remove tags (comma-separated)", :type => :string
-          #TODO: Why is there "add_contact" and "remove_tag" on this?
+#          opt :enable,      "Enable the check"
+          opt :disable,     "Decommission the check and remove it from the interface and API. Flapjack will re-commission the check if an event is received."
+ #         opt :add_tags,    "Apply tags (comma-separated)", :type => :string
+#          opt :remove_tags, "Remove tags (comma-separated)", :type => :string
         end
       when 'status'
         @action_args = Trollop::options do

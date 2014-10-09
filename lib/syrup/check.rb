@@ -7,11 +7,11 @@ module Syrup::Check
   # Matt suggested that if we dont, we should restructure the CLI:
   # "syrup maintenance [un]scheduled check|entity create|update|delete"
 
-  def get(args)
-    puts Flapjack::Diner.checks
-    ids = args[:ids].split(',') if args[:ids]
-    puts Flapjack::Diner.checks(*ids)
-  end
+  # def get(args)
+  #   # TODO: Not working - see https://github.com/flapjack/flapjack-diner/issues/38
+  #   ids = args[:ids].split(',') if args[:ids]
+  #   puts Flapjack::Diner.checks(*ids)
+  # end
 
   def update(args)
     ids   = args[:ids].split(',')
