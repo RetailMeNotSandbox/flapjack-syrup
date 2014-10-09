@@ -29,7 +29,7 @@ module Syrup::Rule
 
     # Create the notification rule
     # TODO: Add time restrictions
-    Flapjack::Diner.create_contact_notification_rules(args[:contact_id],[{
+    Flapjack::Diner.create_contact_notification_rules(args[:id],[{
       :entities           => entities,
       :regex_entities     => regex_entities,
       :tags               => tags,

@@ -128,7 +128,7 @@ module SyrupCLI
 
             By default, this will create a new e-mail medium attached to the contact.
 
-            Example: syrup --GLOBALS contact create --first_name FIRST --last_name LAST --email EMAIL
+            Example: syrup --GLOBALS contact create --first-name FIRST --last-name LAST --email EMAIL
 
             Options:
           EOS
@@ -288,7 +288,7 @@ module SyrupCLI
 
             PagerDuty is handled separately from media because it uses its own unique API calls.
 
-            Example: syrup --GLOBALS pagerduty create --id CONTACT --service_key KEY --username USER --password PASS [--subdomain DOMAIN]
+            Example: syrup --GLOBALS pagerduty create --id CONTACT --service-key KEY --username USER --password PASS [--subdomain DOMAIN]
 
             Options:
           EOS
@@ -353,12 +353,29 @@ module SyrupCLI
       case @action
       when 'create'
         @action_args = Trollop::options do
-          opt :contact_id,         "Contact to notify", :type => :string
-          opt :json,               "JSON file containing rule definitions", :type => :string, :multi => true
-          opt :entity,             "Entity (multiple allowed)", :type => :string, :multi => true
-          opt :regex_entity,       "Entity regex (multiple allowed)", :type => :string, :multi => true
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup rule create: Create a notification rule.
+
+            Notification rules monitor a specific set of entities. This can be defined in any combination of four ways:
+              * A list of entity names
+              * A regular expression for entity names
+              * A list of entity tags
+              * A regular expression for entity tags
+
+            Each rule has a single contact to notify, and a set of media types to use for each alert type (UNKNOWN, WARNING, CRITICAL).
+
+            Notifications can be disabled for an alert type by setting the "blackhole" state on that type.
+
+            Example: syrup --GLOBALS rule create --id CONTACT [--entities ONE,TWO] [--regex-entities /RX1/,/RX2/] [--critical-media email,jabber]
+
+            Options:
+          EOS
+          opt :id,                 "ID of contact to notify", :type => :string
+#          opt :json,               "JSON file containing rule definitions", :type => :string, :multi => true
+          opt :entities,           "Entities (comma-separated)", :type => :string
+          opt :regex_entities,     "Entity regex (comma-separated)", :type => :string
           opt :tags,               "Tags (comma-separated)", :type => :string
-          opt :regex_tag,          "Tag regex (multiple allowed)", :type => :string, :multi => true
+          opt :regex_tags,         "Tag regex (comma-separated)", :type => :string
 #          opt :time_restrictions,  "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.)", :type => :string
 #          opt :start_time,         "Start time", :type => :string
 #          opt :end_time,           "End time", :type => :string
@@ -375,10 +392,38 @@ module SyrupCLI
         end
       when 'get'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup rule get: Get JSON notification rule data.
+
+            Specify IDs as comma-separated values, or no IDs to get all.
+
+            Example: syrup --GLOBALS rule get [--ids FIRST,SECOND,THIRD]
+
+            Options:
+          EOS
           opt :ids, "Rule identifiers (comma-separated, or get all if omitted)", :type => :string
         end
       when 'update'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup rule update: Modify a notification rule.
+
+            Specify IDs as comma-separated values, or no IDs to modify all.
+
+            Notification rules monitor a specific set of entities. This can be defined in any combination of four ways:
+              * A list of entity names
+              * A regular expression for entity names
+              * A list of entity tags
+              * A regular expression for entity tags
+
+            Each rule has a single contact to notify, and a set of media types to use for each alert type (UNKNOWN, WARNING, CRITICAL).
+
+            Notifications can be disabled for an alert type by setting the "blackhole" flag, or reactivated with the "active" flag.
+
+            Example: syrup --GLOBALS rule update [--ids ONE,TWO] [--entities ONE,TWO] [--regex-entities /RX1/,/RX2/] [--critical-media email,jabber] [--unknown-blackhole] [--critical-active]
+
+            Options:
+          EOS
           # TODO: Verify that these are all full replacement actions, and that there's no add/remove methods
           opt :ids,                "Rule IDs to apply changes to", :type => :string
 #          opt :json,               "JSON file containing changes to apply", :type => :string
@@ -408,7 +453,16 @@ module SyrupCLI
         Trollop::die :critical_blackhole, "cannot be called with argument --critical-active" if @action_args[:critical_blackhole] and @action_args[:critical_active]
       when 'delete'
         @action_args = Trollop::options do
-          opt :ids, "Rule identifiers (comma-separated)", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup rule delete: Delete a notification rule.
+
+            Specify IDs as comma-separated values.
+
+            Example: syrup --GLOBALS rule delete --ids FIRST,SECOND,THIRD
+
+            Options:
+          EOS
+          opt :ids, "Rule identifiers (comma-separated, required)", :type => :string, :required => true
         end
       else
         explode(opts)
@@ -423,12 +477,30 @@ module SyrupCLI
       when 'get'
         # TODO: Regex not yet implemented in diner. When it is - should these be mutually exclusive?
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup entity get: Get JSON entity data.
+
+            Specify IDs as comma-separated values, or no IDs to get all.
+
+            Example: syrup --GLOBALS entity get [--ids FIRST,SECOND,THIRD]
+
+            Options:
+          EOS
           opt :ids,   "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
 #          opt :regex, "Return only entities matching this regular expression", :type => :string
         end
         Trollop::die :ids, "cannot be called with argument --regex" if @action_args[:ids] and @action_args[:regex]
       when 'update'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup entity update: Modify an entity.
+
+            Specify IDs as comma-separated values, or no IDs to modify all.
+
+            Example: syrup --GLOBALS entity update [--ids ONE,TWO] [--add-tags TAG1,TAG2] [--remove-tags TAG3] [--add-contacts ID1,ID2] [--remove-contacts ID3]
+
+            Options:
+          EOS
           # TODO: Diner project page says there are no valid update field keys yet.
           opt :ids,             "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
           opt :add_tags,        "Apply tags (comma-separated)", :type => :string
@@ -438,11 +510,33 @@ module SyrupCLI
         end
       when 'status'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup entity status: Get JSON entity status data.
+
+            Specify IDs as comma-separated values, or no IDs to get all.
+
+            Entity status includes detailed information on every check linked to that entity ID.
+
+            Example: syrup --GLOBALS entity status [--ids FIRST,SECOND,THIRD]
+
+            Options:
+          EOS
           opt :ids, "Entities to get status for (comma-separated)", :type => :string
         end
       when 'test'
         @action_args = Trollop::options do
-          opt :ids,     "Entity to test notifications for (comma-separated)", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup entity test: Test notifications for an entity.
+
+            Specify IDs as comma-separated values, or no IDs to get all.
+
+            Running this command will send a test notification on every check for the entity, in the same way that a real alert would be applied.
+
+            Example: syrup --GLOBALS entity test [--ids FIRST,SECOND,THIRD] [--summary 'Testing entities']
+
+            Options:
+          EOS
+          opt :ids,     "Entities to test notifications for (comma-separated)", :type => :string
           opt :summary, "Notification text to send", :type => :string
         end
       else
@@ -457,10 +551,32 @@ module SyrupCLI
       case @action
       when 'get'
         @action_args = Trollop::options do
-          opt :ids, "Check identifiers (comma-separated, or all if omitted)", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup check get: Get JSON check data.
+
+            Specify IDs as comma-separated values, or no IDs to get all.
+
+            Check IDS are a combination of the entity name and check name, separated by a colon.
+
+            Example: syrup --GLOBALS check get [--ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK]
+
+            Options:
+          EOS
+          opt :ids, "Check identifiers (comma-separated, or all if omitted, format \"<entity_name>:<check_name>\")", :type => :string
         end
       when 'update'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup check update: Modify a check.
+
+            Specify IDs as comma-separated values, or no IDs to update all.
+
+            Check IDS are a combination of the entity name and check name, separated by a colon.
+
+            Example: syrup --GLOBALS check update [--ids ENTITY:CHECK,ENTITY:CHECK] [--add_tags TAG,TAG] [--disable]
+
+            Options:
+          EOS
           opt :ids,         "Check identifiers (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
           opt :enable,      "Enable the check"
           opt :disable,     "Disable the check"
@@ -470,11 +586,32 @@ module SyrupCLI
         end
       when 'status'
         @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup check status: Get JSON check status data.
+
+            Specify IDs as comma-separated values, or no IDs to get all. Check IDS are a combination of the entity name and check name, separated by a colon.
+
+
+            Example: syrup --GLOBALS check status [--ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK]
+
+            Options:
+          EOS
           opt :ids, "Checks to get status for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
         end
       when 'test'
         @action_args = Trollop::options do
-          opt :ids,     "Checks to test notifications for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup entity test: Test notifications for a check.
+
+            Specify IDs as comma-separated values. Check IDS are a combination of the entity name and check name, separated by a colon.
+
+            Running this command will send a test notification on the check, in the same way that a real alert would be applied.
+
+            Example: syrup --GLOBALS check test --ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK [--summary 'Testing checks']
+
+            Options:
+          EOS
+          opt :ids,     "Checks to test notifications for (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string, :required => true
           opt :summary, "Notification text to send", :type => :string
         end
       else
