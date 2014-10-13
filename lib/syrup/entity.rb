@@ -7,6 +7,13 @@ module Syrup::Entity
   # Matt suggested that if we dont, we should restructure the CLI:
   # "syrup maintenance [un]scheduled check|entity create|update|delete"
 
+  def create_ALL(args)
+    Flapjack::Diner.create_entities([{
+      :id =>   'ALL',
+      :name => 'ALL'
+      }])
+  end
+
   def get(args)
     ids = args[:ids].split(',') if args[:ids]
     if args[:regex]
@@ -48,6 +55,6 @@ module Syrup::Entity
 
   def test(args)
     ids = args[:ids].split(',') if args[:ids]
-    Flapjack::Diner.create_test_notifications_entities(*ids, :summary => args[:summary])
+    puts Flapjack::Diner.create_test_notifications_entities(*ids, :summary => args[:summary])
   end
 end

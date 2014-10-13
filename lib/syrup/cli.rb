@@ -128,6 +128,8 @@ module SyrupCLI
 
             By default, this will create a new e-mail medium attached to the contact.
 
+            NOTE: Flapjack creates and maintains a 'default' notification rule for all contacts. You can modify the 'blackhole' attributes on this rule, but any other changes will cause a new blank rule to be created.
+
             Example: syrup --GLOBALS contact create --first-name FIRST --last-name LAST --email EMAIL
 
             Options:
@@ -141,6 +143,7 @@ module SyrupCLI
           opt :timezone,         "Time zone", :type => :string
           opt :tags,             "Tags (comma-separated)", :type => :string
           opt :no_media,         "Do not automatically create the email medium"
+#          opt :no_all_entity,    "Do not add to the ALL entity"
           #TODO: There appears to be no way to set rules or entities on creation
         end
       when 'get'
@@ -250,8 +253,8 @@ module SyrupCLI
           EOS
           opt :ids,              "Media identifiers (comma-separated, form \"<contactID>_<type>\")", :type => :string
           opt :address,          "New medium address", :type => :string
-          opt :interval,         "New medium interval", :type => :string
-          opt :rollup_threshold, "New rollup threshold", :type => :string
+          opt :interval,         "New medium interval", :type => :integer
+          opt :rollup_threshold, "New rollup threshold", :type => :integer
         end
       when 'delete'
         @action_args = Trollop::options do
@@ -415,6 +418,8 @@ module SyrupCLI
 
             Notifications can be disabled for an alert type by setting the "blackhole" flag, or reactivated with the "active" flag.
 
+            NOTE: Flapjack creates and maintains a 'default' notification rule for all contacts. You can modify the 'blackhole' attributes on this rule, but any other changes will cause a new blank rule to be created.
+
             Example: syrup --GLOBALS rule update [--ids ONE,TWO] [--entities ONE,TWO] [--regex-entities /RX1/,/RX2/] [--critical-media email,jabber] [--unknown-blackhole] [--critical-active]
 
             Options:
@@ -469,6 +474,20 @@ module SyrupCLI
       opts = subparser('ENTITY')
       @action = ARGV.shift
       case @action
+      when 'create-ALL'
+        @action_args = Trollop::options do
+          banner <<-EOS.gsub(/^ {12}/, '')
+            \n\rsyrup entity create-ALL: Create special 'ALL' entity.
+
+            The 'ALL' entity (ID ALL, name ALL) is a special entity that aggregates all entities.
+
+            To use ALL, attach a user to the entity. Update the user's default notification rule to enable 'blackhole' for all alert types, then add another rule to allow specific checks or entities.
+
+            Example: syrup --GLOBALS entity create-ALL
+
+            Options:
+          EOS
+        end
       when 'get'
         # TODO: Regex not yet implemented in diner. When it is - should these be mutually exclusive?
         @action_args = Trollop::options do
@@ -496,10 +515,10 @@ module SyrupCLI
 
             Options:
           EOS
-          # TODO: Diner project page says there are no valid update field keys yet.
+          # TODO: Diner project page says there are no valid update field keys yet. Also, says you can add tags but you can't.
           opt :ids,             "Entity identifiers (comma-separated, or get all if omitted)", :type => :string
-          opt :add_tags,        "Apply tags (comma-separated)", :type => :string
-          opt :remove_tags,     "Remove tags (comma-separated)", :type => :string
+#          opt :add_tags,        "Apply tags (comma-separated)", :type => :string
+#          opt :remove_tags,     "Remove tags (comma-separated)", :type => :string
           opt :add_contacts,    "Add contacts for this entity (comma-separated)", :type => :string
           opt :remove_contacts, "Remove contacts for this entity (comma-separated)", :type => :string
         end

@@ -15,7 +15,7 @@ module Syrup::Contact
       } }
     end
     # Create the contact
-    puts Flapjack::Diner.create_contacts([{
+    id = Flapjack::Diner.create_contacts([{
       :id         => args[:id],
       :first_name => args[:first_name],
       :last_name  => args[:last_name],
@@ -24,6 +24,12 @@ module Syrup::Contact
       :tags       => tags,
       :media => media
     }])
+
+    # TODO: When we can get ID's back from Flapjack, add the ALL entity by default.
+    # if !args[:no_all_entity]
+    #   Flapjack::Diner.update_contacts(id, :add_entity => 'ALL')
+    # end
+    id
   end
 
   def get(args)
@@ -83,7 +89,5 @@ module Syrup::Contact
     # Split comma-separated IDs into an array
     ids = args[:ids].split(',') if args[:ids]
     Flapjack::Diner.delete_contacts(*ids)
-    puts "Deleting contacts:"
-    puts ids
   end
 end

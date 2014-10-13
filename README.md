@@ -32,6 +32,8 @@ Create a new contact.
 
 By default, this will create a new e-mail medium attached to the contact.
 
+NOTE: Flapjack creates and maintains a 'default' notification rule for all contacts. You can modify the 'blackhole' attributes on this rule, but any other changes will cause a new blank rule to be created.
+
 Example:
 
     syrup --GLOBALS contact create --first-name FIRST --last-name LAST --email EMAIL
@@ -304,6 +306,8 @@ Each rule has a single contact to notify, and a set of media types to use for ea
 
 Notifications can be disabled for an alert type by setting the "blackhole" flag, or reactivated with the "active" flag.
 
+NOTE: Flapjack creates and maintains a 'default' notification rule for all contacts. You can modify the 'blackhole' attributes on this rule, but any other changes will cause a new blank rule to be created.
+
 Example:
 
     syrup --GLOBALS rule update [--ids ONE,TWO] [--entities ONE,TWO] [--regex-entities /RX1/,/RX2/] [--critical-media email,jabber] [--unknown-blackhole] [--critical-active]
@@ -356,6 +360,22 @@ Options:
     --ids, -i <s>:   Entity identifiers (comma-separated, or get all if omitted)
        --help, -h:   Show this message
 
+### entity create-ALL
+
+Create special 'ALL' entity.
+
+The 'ALL' entity (ID ALL, name ALL) is a special entity that aggregates all entities. 
+
+To use ALL, attach a user to the entity. Update the user's default notification rule to enable 'blackhole' for all alert types, then add another rule to allow specific checks or entities.
+
+Example:
+
+	syrup --GLOBALS entity create-ALL
+
+Options:
+
+    --help, -h:   Show this message
+
 ### entity update
 
 Modify an entity.
@@ -369,8 +389,6 @@ Example:
 Options:
 
                 --ids, -i <s>:   Entity identifiers (comma-separated, or get all if omitted)
-           --add-tags, -a <s>:   Apply tags (comma-separated)
-        --remove-tags, -r <s>:   Remove tags (comma-separated)
        --add-contacts, -d <s>:   Add contacts for this entity (comma-separated)
     --remove-contacts, -e <s>:   Remove contacts for this entity (comma-separated)
                    --help, -h:   Show this message
