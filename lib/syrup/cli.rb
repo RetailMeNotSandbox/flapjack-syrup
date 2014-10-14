@@ -51,6 +51,7 @@ module SyrupCLI
         EOS
     ENTITY_BANNER = <<-EOS.gsub(/^ {10}/, '')
           ** Entity Commands **
+          syrup entity create-ALL
           syrup entity get
           syrup entity update
           syrup entity status
@@ -144,7 +145,8 @@ module SyrupCLI
           opt :tags,             "Tags (comma-separated)", :type => :string
           opt :no_media,         "Do not automatically create the email medium"
 #          opt :no_all_entity,    "Do not add to the ALL entity"
-          #TODO: There appears to be no way to set rules or entities on creation
+          #TODO: There appears to be no way to set rules or entities on creation.
+          # Consider automatically adding to ALL entity once we can reliably get back the new contact's ID.
         end
       when 'get'
         @action_args = Trollop::options do
