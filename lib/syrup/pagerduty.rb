@@ -2,12 +2,14 @@ module Syrup::PagerDuty
 
   def create(args)
     # Create the credentials - no formatting or modification required.
-    Flapjack::Diner.create_contact_pagerduty_credentials(args[:id], {
+    # NOTE: Diner considers all four required as of 1.0, even though Flapjack does not.
+    # https://github.com/flapjack/flapjack-diner/issues/39
+    Flapjack::Diner.create_contact_pagerduty_credentials(args[:id], [{
       :service_key => args[:service_key],
       :subdomain   => args[:subdomain],
       :username    => args[:username],
       :password    => args[:password]
-    })
+    }])
   end
 
   def get(args)

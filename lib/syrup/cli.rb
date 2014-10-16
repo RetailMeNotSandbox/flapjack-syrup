@@ -5,7 +5,7 @@ require 'trollop'
 require 'flapjack-diner'
 
 module SyrupCLI
-  # Thanks to agent462 and the Sensu-CLI project for the base CLI design.
+  # Thanks to the Sensu-CLI project for the base CLI design.
   # https://github.com/agent462/sensu-cli
 
   class Cli
@@ -73,7 +73,6 @@ module SyrupCLI
 
     def parse
       @global_parser = Trollop::Parser.new do
-#        version "sensu-cli version: #{SensuCli::VERSION}"
         version "\n\rsyrup version #{Syrup::VERSION}"
         banner "\n\rsyrup: Create or manipulate objects in your Flapjack environment.\n\r"
         banner "Available subcommands: (syrup SUB-COMMAND --help for detailed usage information)\n\r"
@@ -144,7 +143,6 @@ module SyrupCLI
           opt :timezone,         "Time zone", :type => :string
           opt :tags,             "Tags (comma-separated)", :type => :string
           opt :no_media,         "Do not automatically create the email medium"
-#          opt :no_all_entity,    "Do not add to the ALL entity"
           #TODO: There appears to be no way to set rules or entities on creation.
           # Consider automatically adding to ALL entity once we can reliably get back the new contact's ID.
         end
@@ -178,13 +176,10 @@ module SyrupCLI
           opt :email,           "Email address (of the CONTACT, not the notification medium)", :type => :string
           opt :timezone,        "Time zone", :type => :string
           opt :tags,            "Replace all tags on contact (comma-separated)", :type => :string
-#          opt :add_tags,        "Apply tags (comma-separated)", :type => :string
-#          opt :remove_tags,     "Remove tags (comma-separated)", :type => :string
+          # TODO: Add support for add_tags, remove_tags when available
           opt :add_entities,    "Link to entities (comma-separated)", :type => :string
           opt :remove_entities, "Unlink from entities (comma-separated)", :type => :string
           # TODO: Add support for add_media, remove_media when available
-#          opt :add_media,       "Add media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
-#          opt :remove_media,    "Remove media (comma-separated) (NOT YET SUPPORTED as of Flapjack 1.0)", :type => :string
           opt :add_rules,       "Apply notification rules (comma-separated)", :type => :string
           opt :remove_rules,    "Remove notification rules (comma-separated)", :type => :string
         end
@@ -225,8 +220,8 @@ module SyrupCLI
           opt :id,               "Parent contact ID (required)", :type => :string, :required => true
           opt :type,             "Medium type (required)", :type => :string, :required => true
           opt :address,          "Medium address (required)", :type => :string, :required => true
-          opt :interval,         "Notification interval", :default => 7200, :type => :integer, :required => true
-          opt :rollup_threshold, "Rollup threshold", :default => 0, :type => :integer, :required => true #TODO: Find out what this actually is
+          opt :interval,         "Notification interval", :default => 7200, :type => :integer
+          opt :rollup_threshold, "Rollup threshold", :default => 0, :type => :integer
         end
       when 'get'
         # TODO: Media ID may change when the data handling code is changed, per http://flapjack.io/docs/1.0/jsonapi/?ruby#get-media
@@ -293,10 +288,13 @@ module SyrupCLI
             Options:
           EOS
           opt :id,          "Parent contact ID (required)", :type => :string, :required => true
-          opt :service_key, "PagerDuty service key (required)", :type => :string, :required => true
-          opt :subdomain,   "PagerDuty subdomain", :type => :string
-          opt :username,    "PagerDuty username (required)", :type => :string, :required => true
-          opt :password,    "PagerDuty password (required)", :type => :string, :required => true
+          opt :service_key, "PagerDuty service key", :type => :string, :default => ''
+          opt :subdomain,   "PagerDuty subdomain", :type => :string, :default => ''
+          opt :username,    "PagerDuty username", :type => :string, :default => ''
+          opt :password,    "PagerDuty password", :type => :string, :default => ''
+          # TODO: Might make sense to make service key and subdomain/user/pass mutually exclusive. Testing is required.
+          # TODO: Diner considers all four required as of 1.0, even though Flapjack does not.
+          # https://github.com/flapjack/flapjack-diner/issues/39
         end
       when 'get'
         @action_args = Trollop::options do
@@ -370,19 +368,12 @@ module SyrupCLI
 
             Options:
           EOS
-          opt :id,                 "ID of contact to notify", :type => :string
-#          opt :json,               "JSON file containing rule definitions", :type => :string, :multi => true
+          opt :id,                 "ID of contact to notify (required)", :type => :string, :required => true
           opt :entities,           "Entities (comma-separated)", :type => :string
           opt :regex_entities,     "Entity regex (comma-separated)", :type => :string
           opt :tags,               "Tags (comma-separated)", :type => :string
           opt :regex_tags,         "Tag regex (comma-separated)", :type => :string
-#          opt :time_restrictions,  "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.)", :type => :string
-#          opt :start_time,         "Start time", :type => :string
-#          opt :end_time,           "End time", :type => :string
-#          opt :rrules,             "Not implemented"
-#          opt :exrules,            "Not implemented"
-#          opt :rtimes,             "Not implemented"
-#          opt :extimes,            "Not implemented"
+          # TODO: Time restrictions - marked as "TODO" on the Diner project page.
           opt :unknown_media,      "UNKNOWN notification media types (comma-separated)", :type => :string
           opt :warning_media,      "WARNING notification media types (comma-separated)", :type => :string
           opt :critical_media,     "CRITICAL notification media types (comma-separated)", :type => :string
@@ -426,20 +417,12 @@ module SyrupCLI
 
             Options:
           EOS
-          # TODO: Verify that these are all full replacement actions, and that there's no add/remove methods
           opt :ids,                "Rule IDs to apply changes to", :type => :string
-#          opt :json,               "JSON file containing changes to apply", :type => :string
           opt :entities,           "Entity names (comma-separated)", :type => :string
           opt :regex_entities,     "Entity regexes (comma-separated)", :type => :string
           opt :tags,               "Tags (comma-separated)", :type => :string
           opt :regex_tags,         "Tag regexes (comma-separated)", :type => :string
-#          opt :time_restrictions,  "Time restrictions (NOT IMPLEMENTED - marked as \"TODO\" on the Diner project page.)", :type => :string
-#          opt :start_time,         "Start time", :type => :string
-#          opt :end_time,           "End time", :type => :string
-#          opt :rrules,             "Not implemented"
-#          opt :exrules,            "Not implemented"
-#          opt :rtimes,             "Not implemented"
-#          opt :extimes,            "Not implemented"
+          # TODO: Time restrictions - marked as "TODO" on the Diner project page.
           opt :unknown_media,      "UNKNOWN notification media types (comma-separated)", :type => :string
           opt :warning_media,      "WARNING notification media types (comma-separated)", :type => :string
           opt :critical_media,     "CRITICAL notification media types (comma-separated)", :type => :string
@@ -491,7 +474,7 @@ module SyrupCLI
           EOS
         end
       when 'get'
-        # TODO: Regex not yet implemented in diner. When it is - should these be mutually exclusive?
+        # TODO: Regex not yet implemented in diner. When it is, should these be mutually exclusive?
         @action_args = Trollop::options do
           banner <<-EOS.gsub(/^ {12}/, '')
             \n\rsyrup entity get: Get JSON entity data.
@@ -566,21 +549,6 @@ module SyrupCLI
       @action = ARGV.shift
       case @action
         # TODO: 'get' doesn't actually do anything - see https://github.com/flapjack/flapjack-diner/issues/38
-      # when 'get'
-      #   @action_args = Trollop::options do
-      #     banner <<-EOS.gsub(/^ {12}/, '')
-      #       \n\rsyrup check get: Get JSON check data.
-
-      #       Specify IDs as comma-separated values, or no IDs to get all.
-
-      #       Check IDS are a combination of the entity name and check name, separated by a colon.
-
-      #       Example: syrup --GLOBALS check get [--ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK]
-
-      #       Options:
-      #     EOS
-      #     opt :ids, "Check identifiers (comma-separated, or all if omitted, format \"<entity_name>:<check_name>\")", :type => :string
-      #   end
       when 'update'
         @action_args = Trollop::options do
           # TODO: Consider switching this to just be syrup check delete.
@@ -598,10 +566,8 @@ module SyrupCLI
             Options:
           EOS
           opt :ids,         "Check identifiers (comma-separated, format \"<entity_name>:<check_name>\")", :type => :string
-#          opt :enable,      "Enable the check"
           opt :disable,     "Decommission the check and remove it from the interface and API. Flapjack will re-commission the check if an event is received."
- #         opt :add_tags,    "Apply tags (comma-separated)", :type => :string
-#          opt :remove_tags, "Remove tags (comma-separated)", :type => :string
+          # TODO: add_tags and remove_tags when they become available in Diner
         end
       when 'status'
         @action_args = Trollop::options do

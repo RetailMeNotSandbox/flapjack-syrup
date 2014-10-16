@@ -185,10 +185,10 @@ Example:
 Options:
 
              --id, -i <s>:   Parent contact ID (required)
-    --service-key, -s <s>:   PagerDuty service key (required)
+    --service-key, -s <s>:   PagerDuty service key
       --subdomain, -u <s>:   PagerDuty subdomain
-       --username, -e <s>:   PagerDuty username (required)
-       --password, -p <s>:   PagerDuty password (required)
+       --username, -e <s>:   PagerDuty username
+       --password, -p <s>:   PagerDuty password
                --help, -h:   Show this message
 
 ### pagerduty get
@@ -261,7 +261,7 @@ Example:
 
 Options:
 
-                --id, -i <s>:   ID of contact to notify
+                --id, -i <s>:   ID of contact to notify (required)
           --entities, -e <s>:   Entities (comma-separated)
     --regex-entities, -r <s>:   Entity regex (comma-separated)
               --tags, -t <s>:   Tags (comma-separated)
@@ -364,7 +364,7 @@ Options:
 
 Create special 'ALL' entity.
 
-The 'ALL' entity (ID ALL, name ALL) is a special entity that aggregates all entities. 
+The 'ALL' entity (ID ALL, name ALL) is a special entity that aggregates all entities.
 
 To use ALL, attach a user to the entity. Update the user's default notification rule to enable 'blackhole' for all alert types, then add another rule to allow specific checks or entities.
 

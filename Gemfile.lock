@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    syrup (0.4.0)
+    syrup (0.5.0)
       flapjack-diner (~> 1.0)
       methadone (~> 1.7.0)
       trollop (~> 2.0)

@@ -31,10 +31,10 @@ module Syrup::Entity
     rcontacts = args[:remove_contacts].split(',') if args[:remove_contacts]
 
 #    Flapjack::Diner.update_entities(*ids, changes)
-    # There are no valid update field keys yet, per the flapjack-diner docs.
+    # TODO: There are no valid update field keys yet, per the flapjack-diner docs.
 
     # Loop through all of the add/remove arrays, make a call to update each one
-    # TODO: Add_tags and remove_tags are in the docs but don't work. This might just be a diner docs fail.
+    # TODO: Add_tags and remove_tags are in the docs but don't work.
     if contacts
       contacts.each do |contact|
         Flapjack::Diner.update_entities(*ids, :add_contact => contact)

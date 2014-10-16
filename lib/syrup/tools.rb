@@ -5,7 +5,7 @@ module Syrup::Tools
     if @cli.global_args[:pretty]
       puts JSON.pretty_generate(data)
     else
-      puts data
+      puts JSON.generate(data)
     end
   end
 
