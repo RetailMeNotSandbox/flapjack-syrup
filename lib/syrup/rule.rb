@@ -2,13 +2,13 @@ module Syrup::Rule
 
   def create(args)
     # Split CSV arguments into arrays
-    entities           = args[:entities].split(',')       if args[:entities]
-    regex_entities     = args[:regex_entities].split(',') if args[:regex_entities]
-    tags               = args[:tags].split(',')           if args[:tags]
-    regex_tags         = args[:regex_tags].split(',')     if args[:regex_tags]
-    unknown_media      = args[:unknown_media].split(',')  if args[:unknown_media]
-    warning_media      = args[:warning_media].split(',')  if args[:warning_media]
-    critical_media     = args[:critical_media].split(',') if args[:critical_media]
+    entities       = args[:entities].split(',')       if args[:entities]
+    regex_entities = args[:regex_entities].split(',') if args[:regex_entities]
+    tags           = args[:tags].split(',')           if args[:tags]
+    regex_tags     = args[:regex_tags].split(',')     if args[:regex_tags]
+    unknown_media  = args[:unknown_media].split(',')  if args[:unknown_media]
+    warning_media  = args[:warning_media].split(',')  if args[:warning_media]
+    critical_media = args[:critical_media].split(',') if args[:critical_media]
 
     # Determine values for blackhole properties
     if args[:unknown_blackhole]

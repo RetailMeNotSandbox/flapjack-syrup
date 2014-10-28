@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    syrup (0.5.0)
+    syrup (0.5.2)
       flapjack-diner (~> 1.0)
       methadone (~> 1.7.0)
       trollop (~> 2.0)
@@ -52,7 +52,7 @@ PLATFORMS
 
 DEPENDENCIES
   aruba
-  bundler (~> 1.6)
+  bundler (~> 1.5)
   rake (~> 0.9.2)
   rdoc
   syrup!

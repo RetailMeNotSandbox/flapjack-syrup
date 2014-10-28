@@ -9,7 +9,7 @@ module Syrup::Entity
 
   def create_ALL(args)
     # Recreating the entity will remove all of the contact links against it.
-    if not Flapjack::Diner.entities(['ALL'])
+    if not Flapjack::Diner.entities('ALL')
       Flapjack::Diner.create_entities([{
         :id =>   'ALL',
         :name => 'ALL'
