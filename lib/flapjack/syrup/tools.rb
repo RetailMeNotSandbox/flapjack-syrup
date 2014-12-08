@@ -1,5 +1,5 @@
 
-module Syrup::Tools
+module Flapjack::Syrup::Tools
 
   def print_json(data)
     if data and @cli.global_args[:pretty]

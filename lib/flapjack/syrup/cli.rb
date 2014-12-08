@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-require 'syrup.rb'
+require 'flapjack/syrup.rb'
 require 'trollop'
 require 'flapjack-diner'
 
-module SyrupCLI
+module Flapjack::Syrup::CLI
   # Thanks to the Sensu-CLI project for the base CLI design.
   # https://github.com/agent462/sensu-cli
 
@@ -73,8 +73,8 @@ module SyrupCLI
 
     def parse
       @global_parser = Trollop::Parser.new do
-        version "\n\rsyrup version #{Syrup::VERSION}"
-        banner "\n\rsyrup: Create or manipulate objects in your Flapjack environment.\n\r"
+        version "\n\rflapjack-syrup version #{Flapjack::Syrup::VERSION}"
+        banner "\n\rflapjack-syrup: Create or manipulate objects in your Flapjack environment.\n\r"
         banner "Available subcommands: (syrup SUB-COMMAND --help for detailed usage information)\n\r"
         banner CONTACT_BANNER
         banner MEDIUM_BANNER
@@ -292,7 +292,6 @@ module SyrupCLI
           opt :subdomain,   "PagerDuty subdomain", :type => :string, :default => ''
           opt :username,    "PagerDuty username", :type => :string, :default => ''
           opt :password,    "PagerDuty password", :type => :string, :default => ''
-          # TODO: Might make sense to make service key and subdomain/user/pass mutually exclusive. Testing is required.
           # TODO: Diner considers all four required as of 1.0, even though Flapjack does not.
           # https://github.com/flapjack/flapjack-diner/issues/39
         end

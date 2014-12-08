@@ -1,4 +1,4 @@
-module Syrup::Medium
+module Flapjack::Syrup::Medium
 
   def create(args)
     # Create the medium - no formatting or modification required.

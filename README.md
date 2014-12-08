@@ -1,12 +1,17 @@
-# syrup
+# flapjack-syrup
 
 Syrup is a command-line utility for creating and modifying resources in a Flapjack environment.
 
 ## Installation
 
-To use, checkout the repository, navigate to the directory, and then install:
+To install directly from source, checkout the repository, navigate to the directory, and then install:
 
     $ bundle install
+
+To build and install a gem instead:
+
+    $ gem build flapjack-syrup.gemspec
+    $ gem install flapjack-syrup-<VERSION>.gem
 
 ## Usage
 

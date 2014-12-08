@@ -1,4 +1,4 @@
-module Syrup::Rule
+module Flapjack::Syrup::Rule
 
   def create(args)
     # Split CSV arguments into arrays

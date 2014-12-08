@@ -1,6 +1,6 @@
 # TODO: Heavily copypasted, needs to be modified to match the CLI.
 
-module Syrup::Entity
+module Flapjack::Syrup::Entity
 
   # TODO: Determine whether to keep create and update in the codebase.
   # There is NO delete option, so it probably makes more sense to force people to use programmatic methods.

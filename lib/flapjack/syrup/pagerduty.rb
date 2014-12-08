@@ -1,4 +1,4 @@
-module Syrup::PagerDuty
+module Flapjack::Syrup::PagerDuty
 
   def create(args)
     # Create the credentials - no formatting or modification required.

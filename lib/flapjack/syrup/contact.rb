@@ -1,4 +1,4 @@
-module Syrup::Contact
+module Flapjack::Syrup::Contact
 
   def create(args)
     # Split comma-separated tags into an array

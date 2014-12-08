@@ -1,11 +1,4 @@
-# TODO: Heavily copypasted, needs to be modified to match the CLI.
-
-module Syrup::Check
-
-  # TODO: Determine whether to keep create and update in the codebase.
-  # There is NO delete option, so it probably makes more sense to force people to use programmatic methods.
-  # Matt suggested that if we dont, we should restructure the CLI:
-  # "syrup maintenance [un]scheduled check|entity create|update|delete"
+module Flapjack::Syrup::Check
 
   # TODO: get() not working - see https://github.com/flapjack/flapjack-diner/issues/38
 

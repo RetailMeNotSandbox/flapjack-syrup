@@ -1,15 +1,14 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'syrup/version'
+require 'flapjack/syrup/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "syrup"
-  spec.version       = Syrup::VERSION
+  spec.name          = "flapjack-syrup"
+  spec.version       = Flapjack::Syrup::VERSION
   spec.authors       = ["Geoff Hicks"]
   spec.email         = ["ghicks@rmn.com"]
-  spec.summary       = %q{syrup: Create and modify resources in your Flapjack environment.}
-#  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{flapjack-syrup: Create or manipulate objects in your Flapjack environment.}
   spec.homepage      = ""
   spec.license       = "mit"
 
@@ -22,7 +21,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('rdoc')
   spec.add_development_dependency('aruba')
   spec.add_development_dependency('rake', '~> 0.9.2')
-  spec.add_dependency('methadone', '~> 1.7.0')
+  spec.add_dependency('methadone', '~> 1.7')
   spec.add_dependency('trollop', '~> 2.0')
   spec.add_dependency('flapjack-diner', '~> 1.0')
+#  spec.add_dependency('flapjack', '~> 1.0')
 end
