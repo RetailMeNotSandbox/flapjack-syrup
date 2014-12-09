@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 require 'flapjack/syrup.rb'
 require 'trollop'
 require 'flapjack-diner'

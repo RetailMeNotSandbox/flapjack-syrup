@@ -58,9 +58,7 @@ module Flapjack::Syrup::Contact
     changes[:tags]       = tags if tags
 
     # Apply field changes.
-    unless changes.empty?
-      Flapjack::Diner.update_contacts(*ids, changes)
-    end
+      Flapjack::Diner.update_contacts(*ids, changes) unless changes.empty?
     # Apply all notification rule and entity changes
     if arules
       arules.each do |rule|
