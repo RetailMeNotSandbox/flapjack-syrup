@@ -17,6 +17,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
+  spec.required_ruby_version = '>= 1.9.3'
+
   spec.add_development_dependency 'bundler', '~> 1.5'
   spec.add_development_dependency('rdoc')
   spec.add_development_dependency('aruba')
@@ -24,5 +26,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency('methadone', '~> 1.7')
   spec.add_dependency('trollop', '~> 2.0')
   spec.add_dependency('flapjack-diner', '~> 1.0')
-  #  spec.add_dependency('flapjack', '~> 1.0')
 end

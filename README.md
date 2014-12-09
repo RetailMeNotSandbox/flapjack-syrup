@@ -13,6 +13,13 @@ To build and install a gem instead:
     $ gem build flapjack-syrup.gemspec
     $ gem install flapjack-syrup-<VERSION>.gem
 
+## Dependencies
+
+* ruby 1.9.3
+* flapjack-diner 1.0
+* methadone 1.7
+* trollop 2.0
+
 ## Usage
 
 Syrup is a command-based app, similar to git, and is called with the following general form:
