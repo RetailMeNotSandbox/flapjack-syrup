@@ -1,5 +1,4 @@
 module Flapjack::Syrup::Contact
-
   def create(args)
     # Split comma-separated tags into an array
     tags = args[:tags].split(',') if args[:tags]
@@ -9,8 +8,8 @@ module Flapjack::Syrup::Contact
     else
       media = {
         :email => {
-          :address => args[:email],
-          :interval => args[:interval],
+          :address          => args[:email],
+          :interval         => args[:interval],
           :rollup_threshold => args[:rollup_threshold]
       } }
     end
@@ -22,7 +21,7 @@ module Flapjack::Syrup::Contact
       :email      => args[:email],
       :timezone   => args[:timezone],
       :tags       => tags,
-      :media => media
+      :media      => media
     }])
 
     # TODO: When we can get ID's back from Flapjack, add the ALL entity by default.
@@ -59,7 +58,7 @@ module Flapjack::Syrup::Contact
     changes[:tags]       = tags if tags
 
     # Apply field changes.
-    if not changes.empty?
+    unless changes.empty?
       Flapjack::Diner.update_contacts(*ids, changes)
     end
     # Apply all notification rule and entity changes

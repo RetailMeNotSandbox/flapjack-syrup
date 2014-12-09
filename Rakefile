@@ -2,18 +2,18 @@ def dump_load_path
   puts $LOAD_PATH.join("\n")
   found = nil
   $LOAD_PATH.each do |path|
-    if File.exists?(File.join(path,"rspec"))
+    if File.exist?(File.join(path, 'rspec'))
       puts "Found rspec in #{path}"
-      if File.exists?(File.join(path,"rspec","core"))
-        puts "Found core"
-        if File.exists?(File.join(path,"rspec","core","rake_task"))
-          puts "Found rake_task"
+      if File.exist?(File.join(path, 'rspec', 'core'))
+        puts 'Found core'
+        if File.exist?(File.join(path, 'rspec', 'core', 'rake_task'))
+          puts 'Found rake_task'
           found = path
         else
-          puts "!! no rake_task"
+          puts '!! no rake_task'
         end
       else
-        puts "!!! no core"
+        puts '!!! no core'
       end
     end
   end
@@ -37,11 +37,9 @@ include Rake::DSL
 
 Bundler::GemHelper.install_tasks
 
-
 Rake::TestTask.new do |t|
   t.pattern = 'test/tc_*.rb'
 end
-
 
 CUKE_RESULTS = 'results.html'
 CLEAN << CUKE_RESULTS
@@ -51,11 +49,10 @@ Cucumber::Rake::Task.new(:features) do |t|
 end
 
 Rake::RDocTask.new do |rd|
-  
-  rd.main = "README.rdoc"
-  
-  rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*")
+
+  rd.main = 'README.rdoc'
+
+  rd.rdoc_files.include('README.rdoc', 'lib/**/*.rb', 'bin/**/*')
 end
 
-task :default => [:test,:features]
-
+task :default => [:test, :features]

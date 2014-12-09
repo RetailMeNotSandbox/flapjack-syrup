@@ -14,7 +14,7 @@ class App
 
   main do
     # Apply flapjack API path, logger information, etc.
-    Flapjack::Diner.base_uri(@cli.global_args[:host]+":"+@cli.global_args[:port])
+    Flapjack::Diner.base_uri(@cli.global_args[:host] + ':' + @cli.global_args[:port])
     Flapjack::Diner.logger = Logger.new(@cli.global_args[:log])
 
     # Load the methods for the appropriate object
@@ -32,18 +32,17 @@ class App
     when 'check'
       extend Flapjack::Syrup::Check
     when nil
-      Trollop::die "Need an object type"
+      Trollop.die 'Need an object type'
     end
 
     # Get the action argument; call the appropriate method from the extension loaded above
-    self.method(@cli.action.gsub('-','_')).call(@cli.action_args)
+    method(@cli.action.gsub('-', '_')).call(@cli.action_args)
   end
 
-    @cli = Cli.new
-    @cli.parse
+  @cli = Cli.new
+  @cli.parse
 
-
-  use_log_level_option :toggle_debug_on_signal => 'USR1'
+  use_log_level_option toggle_debug_on_signal: 'USR1'
 
   go!
 end

@@ -1,12 +1,11 @@
 module Flapjack::Syrup::Medium
-
   def create(args)
     # Create the medium - no formatting or modification required.
     Flapjack::Diner.create_contact_media(args[:id], [{
       :type             => args[:type],
       :address          => args[:address],
       :interval         => args[:interval],
-      :rollup_threshold => args[:rollup_threshold],
+      :rollup_threshold => args[:rollup_threshold]
     }])
   end
 

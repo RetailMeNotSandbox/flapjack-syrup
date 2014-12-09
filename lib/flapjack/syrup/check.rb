@@ -1,5 +1,4 @@
 module Flapjack::Syrup::Check
-
   # TODO: get() not working - see https://github.com/flapjack/flapjack-diner/issues/38
 
   def update(args)
@@ -33,5 +32,4 @@ module Flapjack::Syrup::Check
     ids = args[:ids].split(',') if args[:ids]
     Flapjack::Diner.create_test_notifications_checks(*ids, :summary => args[:summary])
   end
-
 end

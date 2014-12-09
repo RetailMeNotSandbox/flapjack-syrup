@@ -1,5 +1,4 @@
 module Flapjack::Syrup::Rule
-
   def create(args)
     # Split CSV arguments into arrays
     entities       = args[:entities].split(',')       if args[:entities]
@@ -29,7 +28,7 @@ module Flapjack::Syrup::Rule
 
     # Create the notification rule
     # TODO: Add time restrictions
-    Flapjack::Diner.create_contact_notification_rules(args[:id],[{
+    Flapjack::Diner.create_contact_notification_rules(args[:id], [{
       :entities           => entities,
       :regex_entities     => regex_entities,
       :tags               => tags,
@@ -78,8 +77,8 @@ module Flapjack::Syrup::Rule
     end
 
     # Apply the changes
-    Flapjack::Diner.update_notification_rules(*ids,changes)
-    #TODO: How to handle changes to time restrictions?
+    Flapjack::Diner.update_notification_rules(*ids, changes)
+    # TODO: How to handle changes to time restrictions?
   end
 
   def delete(args)
