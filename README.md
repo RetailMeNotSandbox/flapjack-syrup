@@ -519,9 +519,11 @@ Options:
 
 ## Contributing
 
-1. Create a ticket on Jira
+1. Create an issue on GitHub
 2. Fork the project into your personal account
-3. Create your ticket branch (`git checkout -b ticket-number`)
-4. Commit your changes (`git commit -am '[ticket-number] Add some feature'`)
-5. Push to the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request in Stash
+3. Make your changes
+4. Submit a Pull Request
+
+Please include tests with your changes. Adding tests for existing work is also greatly appreciated.
+
+
