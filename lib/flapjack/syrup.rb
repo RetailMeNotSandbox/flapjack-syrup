@@ -8,8 +8,10 @@ require 'flapjack/syrup/pagerduty'
 require 'flapjack/syrup/cli'
 require 'flapjack/syrup/tools'
 
+# This is just here to load all of the components with a single call:
+#   require 'flapjack/syrup'
+
 module Flapjack
   module Syrup
-    # Your code goes here...
   end
 end
