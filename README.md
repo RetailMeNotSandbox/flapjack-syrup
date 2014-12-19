@@ -1,12 +1,24 @@
-# syrup
+# flapjack-syrup
 
 Syrup is a command-line utility for creating and modifying resources in a Flapjack environment.
 
 ## Installation
 
-To use, checkout the repository, navigate to the directory, and then install:
+To install directly from source, checkout the repository, navigate to the directory, and then install:
 
     $ bundle install
+
+To build and install a gem instead:
+
+    $ gem build flapjack-syrup.gemspec
+    $ gem install flapjack-syrup-<VERSION>.gem
+
+## Dependencies
+
+* ruby 1.9.3
+* flapjack-diner 1.0
+* methadone 1.7
+* trollop 2.0
 
 ## Usage
 
@@ -507,9 +519,11 @@ Options:
 
 ## Contributing
 
-1. Create a ticket on Jira
+1. Create an issue on GitHub
 2. Fork the project into your personal account
-3. Create your ticket branch (`git checkout -b ticket-number`)
-4. Commit your changes (`git commit -am '[ticket-number] Add some feature'`)
-5. Push to the branch (`git push origin my-new-feature`)
-6. Create a new Pull Request in Stash
+3. Make your changes
+4. Submit a Pull Request
+
+Please include tests with your changes. Adding tests for existing work is also greatly appreciated.
+
+

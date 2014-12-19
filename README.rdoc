@@ -1,23 +1,44 @@
-= syrup - DESCRIBE YOUR GEM
+= flapjack-syrup - Create and manage resources in your Flapjack environment.
 
-Author::  YOUR NAME (YOUR EMAIL)
-Copyright:: Copyright (c) 2014 YOUR NAME
-
+Author::  Geoff Hicks (ghicks@rmn.com)
+Copyright:: Copyright (c) 2014 Geoff Hicks
 
 License:: mit, see LICENSE.txt
-
-
-
-DESCRIBE YOUR GEM HERE
 
 == Links
 
 * {Source on Github}[LINK TO GITHUB]
 * RDoc[LINK TO RDOC.INFO]
 
+== Dependencies
+
+* ruby 1.9.3
+* flapjack-diner 1.0
+* methadone 1.7
+* trollop 2.0
+
 == Install
+
+To install directly from source, checkout the repository, navigate to the
+directory, and then install:
+
+  $ bundle install
+
+To build and install a gem instead:
+
+  $ gem build flapjack-syrup.gemspec
+  $ gem install flapjack-syrup-<VERSION>.gem
 
 == Examples
 
+Get all contacts from a local Flapjack install:
+  syrup --pretty -h localhost -p 3081 contact get
+
+Create a new medium on a local Flapjack install:
+  syrup -h localhost -p 3081 medium create --id contact_id --type email --address foo@bar.com
+
+For more help, see README.md or run "--help" on any subcommand.
+
 == Contributing
 
+Fork the project and submit a pull request, we'll be happy to review it.

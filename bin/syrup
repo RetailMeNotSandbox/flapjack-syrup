@@ -2,48 +2,47 @@
 
 require 'optparse'
 require 'methadone'
-require 'syrup.rb'
+require 'flapjack/syrup'
 require 'trollop'
 require 'flapjack-diner'
 
 class App
   include Methadone::Main
   include Methadone::CLILogging
-  include SyrupCLI
-  extend Syrup::Tools
+  include Flapjack::Syrup::CLI
+  extend Flapjack::Syrup::Tools
 
   main do
     # Apply flapjack API path, logger information, etc.
-    Flapjack::Diner.base_uri(@cli.global_args[:host]+":"+@cli.global_args[:port])
-    Flapjack::Diner.logger = Logger.new(@cli.global_args[:log]) #TODO: Look at combining this with methadone's logging infra.
+    Flapjack::Diner.base_uri(@cli.global_args[:host] + ':' + @cli.global_args[:port])
+    Flapjack::Diner.logger = Logger.new(@cli.global_args[:log])
 
     # Load the methods for the appropriate object
     case @cli.object
     when 'contact'
-      extend Syrup::Contact
+      extend Flapjack::Syrup::Contact
     when 'medium'
-      extend Syrup::Medium
+      extend Flapjack::Syrup::Medium
     when 'pagerduty'
-      extend Syrup::PagerDuty
+      extend Flapjack::Syrup::PagerDuty
     when 'rule'
-      extend Syrup::Rule
+      extend Flapjack::Syrup::Rule
     when 'entity'
-      extend Syrup::Entity
+      extend Flapjack::Syrup::Entity
     when 'check'
-      extend Syrup::Check
+      extend Flapjack::Syrup::Check
     when nil
-      Trollop::die "Need an object type"
+      Trollop.die 'Need an object type'
     end
 
     # Get the action argument; call the appropriate method from the extension loaded above
-    self.method(@cli.action.gsub('-','_')).call(@cli.action_args)
+    method(@cli.action.gsub('-', '_')).call(@cli.action_args)
   end
 
-    @cli = Cli.new
-    @cli.parse
+  @cli = Cli.new
+  @cli.parse
 
-
-  use_log_level_option :toggle_debug_on_signal => 'USR1'
+  use_log_level_option toggle_debug_on_signal: 'USR1'
 
   go!
 end

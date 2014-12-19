@@ -1,5 +1,4 @@
-module Syrup::PagerDuty
-
+module Flapjack::Syrup::PagerDuty
   def create(args)
     # Create the credentials - no formatting or modification required.
     # NOTE: Diner considers all four required as of 1.0, even though Flapjack does not.
