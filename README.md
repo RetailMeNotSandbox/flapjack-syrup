@@ -39,40 +39,40 @@ Global arguments:
 Available commands are listed below.
 
 ### contact
-* [contact create](#contact create)
-* [contact get](#contact get)
-* [contact update](#contact update)
-* [contact delete](#contact delete)
+* [contact create](#contact-create)
+* [contact get](#contact-get)
+* [contact update](#contact-update)
+* [contact delete](#contact-delete)
 
 ### medium
-* [medium create](#medium create)
-* [medium get](#medium get)
-* [medium update](#medium update)
-* [medium delete](#medium delete)
+* [medium create](#medium-create)
+* [medium get](#medium-get)
+* [medium update](#medium-update)
+* [medium delete](#medium-delete)
 
 ### pagerduty
-* [pagerduty create](#pagerduty create)
-* [pagerduty get](#pagerduty get)
-* [pagerduty update](#pagerduty update)
-* [pagerduty delete](#pagerduty delete)
+* [pagerduty create](#pagerduty-create)
+* [pagerduty get](#pagerduty-get)
+* [pagerduty update](#pagerduty-update)
+* [pagerduty delete](#pagerduty-delete)
 
 ### rule
-* [rule create](#rule create)
-* [rule get](#rule get)
-* [rule update](#rule update)
-* [rule delete](#rule delete)
+* [rule create](#rule-create)
+* [rule get](#rule-get)
+* [rule update](#rule-update)
+* [rule delete](#rule-delete)
 
 ### entity
-* [entity create-ALL](#entity create-ALL)
-* [entity get](#entity get)
-* [entity update](#entity update)
-* [entity status](#entity create)
-* [entity test](#entity delete)
+* [entity create-ALL](#entity-create-ALL)
+* [entity get](#entity-get)
+* [entity update](#entity-update)
+* [entity status](#entity-create)
+* [entity test](#entity-delete)
 
 ### check
-* [check update](#check update)
-* [check status](#check status)
-* [check test](#check test)
+* [check update](#check-update)
+* [check status](#check-status)
+* [check test](#check-test)
 
 ----
 
