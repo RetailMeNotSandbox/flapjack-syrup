@@ -549,5 +549,7 @@ Please include tests with your changes. Adding tests for existing work is also g
 ## License
 
 This project is released under the MIT License. See LICENSE.txt for details.
+
 Copyright (c) 2014 RetailMeNot, Inc.
+
 Code developed by Geoff Hicks (ghicks-rmn and gffhcks on GitHub)
