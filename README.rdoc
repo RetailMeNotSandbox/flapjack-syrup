@@ -1,13 +1,13 @@
 = flapjack-syrup - Create and manage resources in your Flapjack environment.
 
 Author::  Geoff Hicks (ghicks@rmn.com)
-Copyright:: Copyright (c) 2014 Geoff Hicks
+Copyright:: Copyright (c) 2014 RetailMeNot, Inc.
 
 License:: mit, see LICENSE.txt
 
 == Links
 
-* {Source on Github}[LINK TO GITHUB]
+* {Source on Github}[https://github.com/RetailMeNot/flapjack-syrup]
 * RDoc[LINK TO RDOC.INFO]
 
 == Dependencies

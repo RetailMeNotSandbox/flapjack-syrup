@@ -38,6 +38,44 @@ Global arguments:
 
 Available commands are listed below.
 
+### contact
+* [contact create](#contact create)
+* [contact get](#contact get)
+* [contact update](#contact update)
+* [contact delete](#contact delete)
+
+### medium
+* [medium create](#medium create)
+* [medium get](#medium get)
+* [medium update](#medium update)
+* [medium delete](#medium delete)
+
+### pagerduty
+* [pagerduty create](#pagerduty create)
+* [pagerduty get](#pagerduty get)
+* [pagerduty update](#pagerduty update)
+* [pagerduty delete](#pagerduty delete)
+
+### rule
+* [rule create](#rule create)
+* [rule get](#rule get)
+* [rule update](#rule update)
+* [rule delete](#rule delete)
+
+### entity
+* [entity create-ALL](#entity create-ALL)
+* [entity get](#entity get)
+* [entity update](#entity update)
+* [entity status](#entity create)
+* [entity test](#entity delete)
+
+### check
+* [check update](#check update)
+* [check status](#check status)
+* [check test](#check test)
+
+----
+
 ### contact create
 
 Create a new contact.
@@ -357,6 +395,22 @@ Options:
     --ids, -i <s>:   Rule identifiers (comma-separated, required)
        --help, -h:   Show this message
 
+### entity create-ALL
+
+Create special 'ALL' entity.
+
+The 'ALL' entity (ID ALL, name ALL) is a special entity that aggregates all entities.
+
+To use ALL, attach a user to the entity. Update the user's default notification rule to enable 'blackhole' for all alert types, then add another rule to allow specific checks or entities.
+
+Example:
+
+  syrup --GLOBALS entity create-ALL
+
+Options:
+
+    --help, -h:   Show this message
+
 ### entity get
 
 Get JSON entity data.
@@ -371,22 +425,6 @@ Options:
 
     --ids, -i <s>:   Entity identifiers (comma-separated, or get all if omitted)
        --help, -h:   Show this message
-
-### entity create-ALL
-
-Create special 'ALL' entity.
-
-The 'ALL' entity (ID ALL, name ALL) is a special entity that aggregates all entities.
-
-To use ALL, attach a user to the entity. Update the user's default notification rule to enable 'blackhole' for all alert types, then add another rule to allow specific checks or entities.
-
-Example:
-
-	syrup --GLOBALS entity create-ALL
-
-Options:
-
-    --help, -h:   Show this message
 
 ### entity update
 
@@ -440,24 +478,6 @@ Options:
         --ids, -i <s>:   Entities to test notifications for (comma-separated)
     --summary, -s <s>:   Notification text to send
            --help, -h:   Show this message
-
-<!--### check get
-
-Get JSON check data.
-
-Specify IDs as comma-separated values, or no IDs to get all.
-
-Check IDS are a combination of the entity name and check name, separated by a colon.
-
-Example:
-
-    syrup --GLOBALS check get [--ids ENTITY:CHECK,ENTITY:CHECK,ENTITY:CHECK]
-
-Options:
-
-    --ids, -i <s>:   Check identifiers (comma-separated, or all if omitted, format "<entity_name>:<check_name>")
-       --help, -h:   Show this message
--->
 
 ### check update
 
