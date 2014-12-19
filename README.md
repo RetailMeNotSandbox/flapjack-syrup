@@ -526,4 +526,6 @@ Options:
 
 Please include tests with your changes. Adding tests for existing work is also greatly appreciated.
 
+## License
 
+This project is released under the MIT License. See LICENSE.txt for details.
