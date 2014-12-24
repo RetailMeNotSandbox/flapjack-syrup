@@ -1,48 +1,24 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
-require 'methadone'
+require 'gli'
 require 'flapjack/syrup'
-require 'trollop'
-require 'flapjack-diner'
 
-class App
-  include Methadone::Main
-  include Methadone::CLILogging
-  include Flapjack::Syrup::CLI
-  extend Flapjack::Syrup::Tools
+include GLI::App
 
-  main do
-    # Apply flapjack API path, logger information, etc.
-    Flapjack::Diner.base_uri(@cli.global_args[:host] + ':' + @cli.global_args[:port])
-    Flapjack::Diner.logger = Logger.new(@cli.global_args[:log])
+program_desc 'Command suite to manipulate your Flapjack notification system.'
 
-    # Load the methods for the appropriate object
-    case @cli.object
-    when 'contact'
-      extend Flapjack::Syrup::Contact
-    when 'medium'
-      extend Flapjack::Syrup::Medium
-    when 'pagerduty'
-      extend Flapjack::Syrup::PagerDuty
-    when 'rule'
-      extend Flapjack::Syrup::Rule
-    when 'entity'
-      extend Flapjack::Syrup::Entity
-    when 'check'
-      extend Flapjack::Syrup::Check
-    when nil
-      Trollop.die 'Need an object type'
-    end
+version Flapjack::Syrup::VERSION
 
-    # Get the action argument; call the appropriate method from the extension loaded above
-    method(@cli.action.gsub('-', '_')).call(@cli.action_args)
-  end
+# http://naildrivin5.com/gli/rdoc/classes/GLI/App.html#method-i-subcommand_option_handling
+subcommand_option_handling :normal
 
-  @cli = Cli.new
-  @cli.parse
+# http://naildrivin5.com/gli/rdoc/classes/GLI/App.html#method-i-synopsis_format
+synopsis_format :compact
 
-  use_log_level_option toggle_debug_on_signal: 'USR1'
+# loads *.rb from given directory.
+# Splitting the UI out to separate files makes for easy reading.
+# http://naildrivin5.com/gli/rdoc/classes/GLI/App.html#method-i-commands_from
+#
+commands_from "flapjack/syrup/ui"
 
-  go!
-end
+exit run(ARGV)
