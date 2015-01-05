@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('rdoc')
   spec.add_development_dependency('aruba')
   spec.add_development_dependency('rake', '~> 0.9.2')
-  spec.add_dependency('methadone', '~> 1.7')
-  spec.add_dependency('trollop', '~> 2.0')
+  spec.add_dependency('gli')
   spec.add_dependency('flapjack-diner', '~> 1.0')
 end
