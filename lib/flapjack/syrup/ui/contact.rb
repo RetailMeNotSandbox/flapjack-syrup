@@ -5,12 +5,12 @@ contact crud - bunch of sub commands for contacts
 command :contact do |c|
   c.desc 'create a new contact'
   c.long_desc '''
-By default, this will create a new e-mail medium attached to the contact.
+  By default, this will create a new e-mail medium attached to the contact.
 
-NOTE: Flapjack creates and maintains a "default" notification rule for all contacts.
+  NOTE: Flapjack creates and maintains a "default" notification rule for all contacts.
 
-You can modify the "blackhole" attributes on this rule, but any other changes will cause a new blank rule to be created.
-'''
+  You can modify the "blackhole" attributes on this rule, but any other changes will cause a new blank rule to be created.
+  '''
   c.command :create do |create|
     create.desc 'Unique identifier - generated if omitted'
     create.arg_name 'id'
@@ -51,18 +51,30 @@ You can modify the "blackhole" attributes on this rule, but any other changes wi
       puts "TODO: contact create"
     end
   end
-  c.desc 'get an contact'
+
+  c.desc 'get contact(s)'
+  c.long_desc '''
+  Get JSON contact data.
+
+  Specify IDs as comma-separated values, or no IDs to get all contacts.
+  '''
   c.command :get do |get|
+    get.desc "Contact identifiers (comma-separated)"
+    get.arg_name 'ids'
+    get.default_value 'all'
+    get.flag [:ids]
     get.action do |global_options,options,args|
       puts "TODO: contact get"
     end
   end
+
   c.desc 'update an contact'
   c.command :update do |update|
     update.action do |global_options,options,args|
       puts "TODO: contact update"
     end
   end
+
   c.desc 'delete an contact'
   c.command :delete do |delete|
     delete.action do |global_options,options,args|
